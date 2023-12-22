@@ -1,6 +1,6 @@
 package fr.tln.univ.exception;
 
-public class CommandeException  extends RuntimeException{
+public class CommandeException extends RuntimeException{
     public CommandeException() {
 
     }
