@@ -1,9 +1,9 @@
 package fr.tln.univ.controller;
 
-import fr.tln.univ.entities.Client;
-import fr.tln.univ.entities.Produit;
+import fr.tln.univ.model.entities.Produit;
 import fr.tln.univ.service.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +16,12 @@ public class ProduitController {
     ProduitService produitService;
 
     @GetMapping("/getallproduct")
-    public List<Produit> getAllProducts(){
-        return produitService.getAllProduit();
+    public ResponseEntity<List<Produit>> getAllProducts(){
+        List<Produit> produitList = produitService.getAllProduit();
+        return ResponseEntity.ok().body(produitList);
     }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public Produit getProductById(@PathVariable Integer id){
         return produitService.getProduitById(id);
     }
@@ -30,7 +31,7 @@ public class ProduitController {
         return produitService.createProduit(produit);
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public void deleteProduct(Integer id){
         produitService.deleteProduit(id);
     }

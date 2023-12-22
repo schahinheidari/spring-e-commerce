@@ -3,14 +3,14 @@ fr/tln/univ/controller/ClientController.class
 fr/tln/univ/service/AdminService.class
 fr/tln/univ/service/ProduitService.class
 fr/tln/univ/entities/Produit.class
+fr/tln/univ/exception/NotFoundException.class
 fr/tln/univ/dao/ProduitRepository.class
 fr/tln/univ/service/CommandeService.class
-fr/tln/univ/entities/Categorie.class
 fr/tln/univ/dao/AdminRepository.class
 fr/tln/univ/entities/Client.class
 fr/tln/univ/dao/LigneDeCommandeRepository.class
 fr/tln/univ/dao/CommandeRepository.class
-fr/tln/univ/service/CategorieService.class
+fr/tln/univ/controller/ProduitController.class
 fr/tln/univ/service/LigneDeCommandeService.class
 fr/tln/univ/entities/LigneDeCommande.class
 fr/tln/univ/dao/ClientRepository.class

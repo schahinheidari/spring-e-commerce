@@ -1,4 +1,4 @@
-package fr.tln.univ.entities;
+package fr.tln.univ.model.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Setter
@@ -16,13 +17,20 @@ public class Produit {
     public static final String CURRENCY = "EUR";
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @Column(name = "CODE", nullable = false)
     private Integer code;
-    @Column(name = "prix")
-    private int prixUnitaire;
+    @Column(name = "price")
+    private int priceUnite;
     @Column(name = "NAME", nullable = false)
     private String name;
-    @JoinColumn(name = "CLIENTID", nullable = false, updatable = false)
-    private Client client;
+    @Column(name = "QUANTITY", nullable = false)
+    private int quantity;
+
+/*
+    @OneToMany(mappedBy = "produit")
+    private List<Commande> commande;
+*/
 
     }

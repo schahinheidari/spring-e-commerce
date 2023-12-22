@@ -1,7 +1,8 @@
 package fr.tln.univ.service;
 
 import fr.tln.univ.dao.ProduitRepository;
-import fr.tln.univ.entities.Produit;
+import fr.tln.univ.model.entities.Produit;
+import fr.tln.univ.model.mapper.ProduitMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ public class ProduitService {
 
     @Autowired
     private ProduitRepository produitRepository;
+
 
     public List<Produit> getAllProduit(){
         return produitRepository.findAll();
