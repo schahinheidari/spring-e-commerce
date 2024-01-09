@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Order</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:growl id="growl" showDetail="true" sticky="true"/>
+		<p:panel id="commande" header="Credit card">
+			<h:panelGrid>
+				<h:outputLabel for="number" value="Number" />
+				<p:inputMask id="number" value="#{commandeServer.numberCart}" required="true" mask="9999 9999 9999 9999"/>
+
+				<h:outputLabel for="name" value="Cardholder Name"/>
+				<p:inputText id="name" value="#{commandeServer.nameholder}" required="true" style="text-transform:uppercase"
+				validatorMessage="Invalid holder name"/>
+				
+				<h:outputLabel for="validity" value="Validity"/>
+				<p:inputMask id="validity" value="#{commandeServer.validity}" required="true" mask="99/9999" placeholder="02/2022"/>
+				
+				<h:outputLabel for="code" value="Security code"/>
+				<p:inputMask id="code" value="#{commandeServer.securityCode}" required="true" mask="999" placeholder="999"/>
+			</h:panelGrid>
+		</p:panel>
+		<br></br>
+	</h:form>
+			<p:commandButton value="Finalize Purchase" action="#{commandeServer.save}"  />
+</h:body>
+</html>

@@ -8,6 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Integer> {
+    boolean findByEmail(String email);
 
  /*   List<Client> findAllByName(String name);
     boolean findByEmail(String email);*/

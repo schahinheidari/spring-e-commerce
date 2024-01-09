@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>E-Commerc</title>
+	<style type="text/css">
+.logo {
+	width: 5%
+}
+
+.detail {
+	width: 95%;
+	padding-left: 100px;
+}
+
+.detail td {
+	font-size: 15px;
+}
+
+.ui-datascroller .ui-datascroller-item {
+	border-bottom: 1px solid #A8A8A8;
+	padding: 0px 5px;
+	/* with the exported variables from Nova and Luna Themes*/
+	border-bottom-color: var(- -input-border-color, #A8A8A8);
+}
+</style>
+</h:head>
+<h:body>
+	<h:form>
+			<p:panel>
+				<h:outputLabel value="Client: "/>
+				<h:outputLabel value="#{HomeServer.Logged}"/>
+			</p:panel>
+		<p:dataScroller value="#{HomeServer.list}" var="prod" chunkSize="10" mode="inline" scrollHeight="500">
+			<c:facet name="header"> Our products </c:facet>
+			<h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+            <p:graphicImage name="./images/001.jpg" />
+				<p:outputPanel>
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputText value="Description:" />
+						<h:outputText value="#{prod.description}" style="font-weight: bold" />
+
+						<h:outputText value="Model:" />
+						<h:outputText value="#{prod.model}" style="font-weight: bold" />
+
+						<p:commandButton value="Carpet" action="#{HomeServer.add(prod)}" update="@form" style="left: 700%; top: 100% " />
+
+					</h:panelGrid>
+				</p:outputPanel>
+			</h:panelGrid>
+		</p:dataScroller>
+		<h:form>
+			<br></br>
+			<p:commandButton value="Go to Carpet" action="#{HomeServer.carpet()}" />
+			<br></br>
+			<br></br>
+			<h:outputText value="Products in carpet: " />
+			<h:outputText id="output" value="#{HomeServer.quantity}" />
+		</h:form>
+	</h:form>
+</h:body>
+</html>

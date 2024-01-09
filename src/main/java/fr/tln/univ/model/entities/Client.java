@@ -3,6 +3,8 @@ package fr.tln.univ.model.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.List;
 
@@ -20,15 +22,19 @@ public class Client implements Serializable {
     private Integer id;
 
     @Column(name= "NAME")
+    @Pattern(regexp="[A-Za-z\\s]+", message="First Name should contains alphabets only")
     private String name;
 
     @Column(name = "FAMILY")
+    @Pattern(regexp="[A-Za-z\\s]+", message="Last Name should contains alphabets only")
     private String family;
 
+    @Email
     @Column(name = "EMAIL", unique = true)
     private String email;
 
     @Column(name = "PASSWORD", nullable = false)
+    @Pattern(regexp="[A-Za-z0-9!@#$%^&*_]{8,15}", message="Please Enter a valid Password")
     private String password;
 
     @OneToMany(mappedBy = "client")

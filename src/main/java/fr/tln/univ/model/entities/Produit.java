@@ -27,6 +27,8 @@ public class Produit {
     private String name;
     @Column(name = "QUANTITY", nullable = false)
     private int quantity;
+    @Column(name = "PHOTO")
+    private String photo;
 
 /*
     @OneToMany(mappedBy = "produit")

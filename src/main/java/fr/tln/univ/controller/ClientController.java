@@ -4,11 +4,14 @@ import fr.tln.univ.dao.ClientRepository;
 import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.service.ClientService;
+import org.mapstruct.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -41,7 +44,7 @@ public class ClientController {
         clientService.deleteClient(id);
     }
 
-/*    @PostMapping(value = "/signup")
+    @PostMapping(value = "/signup")
     public String postStringUpPage(@ModelAttribute Client client){
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode(client.getPassword());
@@ -49,6 +52,7 @@ public class ClientController {
         client.setEmail(client.getEmail());
         clientRepository.save(client);
         return null;
-    }*/
+    }
+
 
 }
