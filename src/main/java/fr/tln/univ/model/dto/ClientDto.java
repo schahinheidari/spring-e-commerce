@@ -1,5 +1,6 @@
 package fr.tln.univ.model.dto;
 
+import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.Commande;
 import lombok.*;
 
@@ -12,10 +13,9 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientDto implements Serializable {
+public class ClientDto extends Client implements Serializable {
 
     private Integer id;
 

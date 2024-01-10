@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SessionDao extends JpaRepository<UserSession, Integer> {
+public interface SessionRepository extends JpaRepository<UserSession, Integer> {
 
     Optional<UserSession> findByToken(String token);
     Optional<UserSession> findByUserId(Integer userId);

@@ -1,45 +1,82 @@
 package fr.tln.univ.controller;
 
 import fr.tln.univ.dao.CommandeRepository;
-import fr.tln.univ.model.dto.ClientDto;
+import fr.tln.univ.enums.CommandeState;
+import fr.tln.univ.exception.CommandeException;
 import fr.tln.univ.model.dto.CommandeDto;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.Commande;
+import fr.tln.univ.model.mapper.CommandeMapper;
+import fr.tln.univ.service.ClientServiceImp;
 import fr.tln.univ.service.CommandeService;
+import fr.tln.univ.service.CommandeServiceImp;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/commande")
 public class CommandeController {
 
-    @Autowired
-    CommandeService commandeService;
-
-    @Autowired
+    CommandeServiceImp commandeServiceImp;
     CommandeRepository commandeRepository;
+    CommandeService commandeService;
+    CommandeMapper commandeMapper;
+    ClientServiceImp clientServiceImp;
 
-/*    public ResponseEntity<List<CommandeDto>> getAllCommande(){
-        List<CommandeDto> commandeList = commandeService.getAllCommande();
-        return ResponseEntity.ok().body(commandeList);
-    }*/
-
-    @GetMapping("/{id}")
-    public CommandeDto getClientById(@PathVariable Integer id){
-        return commandeService.getCommandeById(id);
+    /*    public ResponseEntity<List<CommandeDto>> getAllCommande(){
+            List<CommandeDto> commandeList = commandeService.getAllCommande();
+            return ResponseEntity.ok().body(commandeList);
+        }*/
+    @PostMapping("/save")
+    public ResponseEntity<Commande> addTheNewCommande(@Valid @RequestBody CommandeDto commandeDto, @RequestHeader("token") String token) {
+        Commande saveCommande = commandeService.saveCommande(commandeDto, token);
+        return new ResponseEntity<Commande>(saveCommande, HttpStatus.CREATED);
     }
 
-    @PostMapping
-    public Commande createClient(@RequestBody Commande commande){
-        return commandeService.createCommande(commande);
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Commande> getCommandeByCommandeId(@PathVariable Integer id) {
+        Commande commande = this.commandeService.getCommandeByCommandeId(id);
+        return ResponseEntity.ok(commandeMapper.mapCommandeToCommandeDto(commande));
+    }
+    @GetMapping("/list")
+    public List<Commande> getAllCommande() {
+        List<Commande> listOfAllCommande = commandeServiceImp.getAllCommandes();
+        return listOfAllCommande;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCommande(Integer id){
-        commandeService.deleteCommande(id);
+    public Commande cancelCommandeByCommandeId(@PathVariable("id") Integer commandeId,@RequestHeader("token") String token){
+        return commandeService.cancelCommandeByCommandeId(commandeId,token);
     }
+    @PutMapping("/{id}")
+    public Commande updateCommande(@PathVariable Integer id, @Valid @RequestBody CommandeDto commandeDto, @RequestHeader("token") String token) {
+        return commandeServiceImp.updateCommandeByCommande(commandeDto, id, token);
+    }
+    @GetMapping("/list/{date}")
+    public List<Commande> getAllCommandeByDate(@PathVariable LocalDate date) {
+        List<Commande> listOfAllCommande = commandeServiceImp.getAllCommandesByDate(date);
+        return listOfAllCommande;
+    }
+    @GetMapping("/client/{id}")
+    public Client getClientByCommandeid(@PathVariable Integer id) {
+        Client client = this.commandeServiceImp.getClientByCommandeid(id);
+        return client;
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCommande(Integer id) {
+        commandeServiceImp.deleteCommande(id);
+    }
+
+
+
 
 }

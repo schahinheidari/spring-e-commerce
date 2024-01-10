@@ -1,32 +1,25 @@
 package fr.tln.univ.service;
 
-import fr.tln.univ.dao.ProduitRepository;
+import fr.tln.univ.enums.ProduitStatus;
+import fr.tln.univ.model.dto.ProduitDto;
 import fr.tln.univ.model.entities.Produit;
-import fr.tln.univ.model.mapper.ProduitMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class ProduitService {
+public interface ProduitService {
 
-    @Autowired
-    private ProduitRepository produitRepository;
+    public Produit addProduit(String token, Produit produit);
 
+    public Produit getProduitById(Integer id);
 
-    public List<Produit> getAllProduit(){
-        return produitRepository.findAll();
-    }
-    public Produit getProduitById(Integer id){
-        return produitRepository.findById(Long.valueOf(id)).orElse(null);
-    }
-    public Produit createProduit(Produit Produit){
-        return produitRepository.save(Produit);
-    }
-    public void deleteProduit(Integer id){
-        produitRepository.deleteById(Long.valueOf(id));
-    }
+    public String deleteProduit(Integer id);
 
+    public Produit updateProduit(Produit produit);
+
+    public List<Produit> getAllProduits();
+
+    public List<ProduitDto> getAllProduitsOfAdmin(Integer id);
+
+    public List<ProduitDto> getProduitsOfStatus(ProduitStatus status);
 
 }

@@ -1,37 +1,27 @@
 package fr.tln.univ.service;
 
-import fr.tln.univ.dao.CommandeRepository;
+import fr.tln.univ.exception.CommandeException;
+import fr.tln.univ.exception.LoginException;
 import fr.tln.univ.model.dto.CommandeDto;
+import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.Commande;
-import fr.tln.univ.model.mapper.CommandeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-@Service
-public class CommandeService {
+public interface CommandeService {
+    public Commande saveCommande(CommandeDto commandeDto, String token) throws LoginException, CommandeException;
 
-    @Autowired
-    private CommandeRepository commandeRepository;
+    public Commande getCommandeByCommandeId(Integer CommandeId) throws CommandeException;
 
-    @Autowired
-    private CommandeMapper commandeMapper;
+    public List<Commande> getAllCommandes() throws CommandeException;
 
+    public Commande cancelCommandeByCommandeId(Integer CommandeId,String token) throws CommandeException;
 
+    public Commande updateCommandeByCommande(CommandeDto Commande,Integer CommandeId,String token) throws CommandeException,LoginException;
 
-    public CommandeDto getCommandeById(Integer id){
-        Commande commande = commandeRepository.findById(id).orElse(null);
-        return commandeMapper.mapCommandeToCommandeDto(commande);
-    }
+    public List<Commande> getAllCommandesByDate(LocalDate date) throws CommandeException;
 
-    public Commande createCommande(Commande commande){
-        return commandeRepository.save(commande);
-    }
-
-    public void deleteCommande(Integer id){
-        commandeRepository.deleteById(id);
-    }
-
+    public Client getClientByCommandeid(Integer CommandeId) throws CommandeException;
 
 }

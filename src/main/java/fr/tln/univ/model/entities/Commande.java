@@ -1,12 +1,14 @@
 package fr.tln.univ.model.entities;
 
 
+import fr.tln.univ.enums.CommandeState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -35,6 +37,9 @@ public class Commande implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUIT_COMMANDE")
     private Produit produit;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private CommandeState commandeState;
 
 
 
