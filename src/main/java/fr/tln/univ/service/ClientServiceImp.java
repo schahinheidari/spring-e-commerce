@@ -5,6 +5,7 @@ import fr.tln.univ.dao.SessionRepository;
 import fr.tln.univ.exception.ClientException;
 import fr.tln.univ.exception.ClientNotFoundException;
 import fr.tln.univ.exception.LoginException;
+import fr.tln.univ.exception.NotFoundException;
 import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Client;
@@ -31,15 +32,17 @@ public class ClientServiceImp implements ClientService{
 
     @Override
     public Client addClient(Client client){
-        client.setCommandeList(null);
-        client.setCommandeList(new ArrayList<Commande>());
-        Optional<Client> exist = clientRepository.findByEmail(client.getEmail());
+        Optional<Client> clientOptional = clientRepository.findByEmail(client.getEmail());
+        if (clientOptional.isPresent())
+            throw new ClientException("Client is exist.");
+        return clientRepository.save(client);
+    }
 
-        if (exist.isEmpty())
-            throw new ClientException("Customer already exists. Please try to login with your email address");
-        clientRepository.save(client);
-
-        return addClient(client);
+    public Client findByEmail(String email){
+        Optional<Client> clientOptional = clientRepository.findByEmail(email);
+        if (clientOptional.isEmpty())
+            throw new NotFoundException("Client not found");
+        return clientOptional.get();
     }
 
     @Override
@@ -57,6 +60,7 @@ public class ClientServiceImp implements ClientService{
 
     @Override
     public void deleteClient(Integer id){
+        getClientById(id);
         clientRepository.deleteById(id);
     }
 
@@ -66,9 +70,8 @@ public class ClientServiceImp implements ClientService{
             throw new LoginException("Invalid session token for client");
         }
         loginService.checkTokenStatus(token);
-        Client existingClient = clientRepository.findById(client.getId()).orElseThrow(() -> new ClientException("Client not found for this Id: " + client.getId()));
-        Client newClient = clientRepository.save(client);
-        return newClient;
+        clientRepository.findById(client.getId()).orElseThrow(() -> new ClientException("Client not found for this Id: " + client.getId()));
+        return clientRepository.save(client);
     }
 
     @Override

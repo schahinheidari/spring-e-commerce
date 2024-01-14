@@ -4,6 +4,7 @@ import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.dto.CommandeDto;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.Commande;
+import lombok.Builder;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,7 +15,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public abstract class ClientMapper {
 
-    public ClientDto mapClientToClientDto(Client client){
+    public ClientDto mapClientToClientDto(Client client) {
         ClientDto clientDto = null;
         if (client != null) {
             clientDto = new ClientDto();
@@ -57,6 +58,8 @@ public abstract class ClientMapper {
             clientDtoList.add(clientDto);
         }
         return clientDtoList;
-
     }
+ /*   @IterableMapping(qualifiedByName = "client")
+    @Mapping(target = "clientId", source = "id")
+    public abstract List<ClientDto> listClientToListClientDtoMapper(List<Client> clientList);*/
 }

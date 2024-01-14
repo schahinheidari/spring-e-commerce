@@ -19,4 +19,6 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
     List<ProduitDto> getAllProduitsOfAdmin(Integer id);
 
     List<ProduitDto> getProduitsOfStatus(ProduitStatus status);
+
+    List<ProduitDto> findByStatus(ProduitStatus status);
 }

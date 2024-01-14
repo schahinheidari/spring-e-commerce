@@ -32,6 +32,7 @@ public class Commande implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENT_ID")
+    @NotNull
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)

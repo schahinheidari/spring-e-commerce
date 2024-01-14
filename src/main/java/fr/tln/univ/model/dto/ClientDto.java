@@ -42,7 +42,6 @@ public class ClientDto extends Client implements Serializable {
 
     @Email(message = "Email should be valid")
     @Pattern(regexp = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$", message = "Name should contain only alphabets and space")
-
     private String email;
 
     private String password;

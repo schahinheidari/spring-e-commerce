@@ -9,8 +9,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public abstract class ProduitMapper {
-
-    @Mapping(target = "produitId", source = "id")
     public abstract ProduitDto mapProduitToProduitDto(Produit produit);
 
 }

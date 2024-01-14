@@ -1,5 +1,6 @@
 package fr.tln.univ.model.entities;
 
+import fr.tln.univ.enums.ProduitStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "Produit", indexes = {
+        @Index(name = "idx_produit_quantity", columnList = "QUANTITY")
+})
 @Setter
 @Getter
 @NoArgsConstructor
@@ -29,6 +33,11 @@ public class Produit {
     private int quantity;
     @Column(name = "PHOTO")
     private String photo;
+    @Column(name = "DESCRIPTION")
+    private String description;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PRODUIT_STATUS")
+    private ProduitStatus produit_status;
 
 /*
     @OneToMany(mappedBy = "produit")

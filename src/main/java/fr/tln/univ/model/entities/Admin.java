@@ -39,7 +39,6 @@ public class Admin {
     @Column(name = "EMAIL" ,unique = true)
     private String email;
 
-
     @OneToMany
     @JsonIgnore
     private List<Produit> produitList;
