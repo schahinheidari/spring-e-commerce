@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface AdminService {
     public Admin addAdmin(Admin admin);
+    public AdminDto addAdmin(AdminDto adminDto);
 
     public List<Admin> getAllAdmins() throws AdminException;
 

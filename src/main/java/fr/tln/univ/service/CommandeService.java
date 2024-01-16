@@ -23,5 +23,6 @@ public interface CommandeService {
     public List<Commande> getAllCommandesByDate(LocalDate date) throws CommandeException;
 
     public Client getClientByCommandeid(Integer CommandeId) throws CommandeException;
+    public void deleteCommande(Integer id) throws CommandeException;
 
 }

@@ -4,8 +4,6 @@ import fr.tln.univ.model.dto.AdminDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Admin;
 import fr.tln.univ.service.AdminServiceImp;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +13,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-@RequiredArgsConstructor
+
 public class AdminController {
 
-    private AdminServiceImp adminServiceImp;
+    private final  AdminServiceImp adminServiceImp;
+
+    public AdminController(AdminServiceImp adminServiceImp) {
+        this.adminServiceImp = adminServiceImp;
+    }
 
     //Add Admin-------------------------------------
     @PostMapping("/save")
-    public ResponseEntity<Admin> addAdmin(@Valid @RequestBody Admin admin) {
-        Admin addAdmin = adminServiceImp.addAdmin(admin);
+    AdminDto addAdmin(@Valid @RequestBody AdminDto admin) {
+        AdminDto addAdminDto = adminServiceImp.addAdmin(admin);
         System.out.println("Admin" + admin);
-        return new ResponseEntity<Admin>(addAdmin, HttpStatus.CREATED);
+        return addAdminDto;
     }
 
     //Get the list of Admin-----------------------

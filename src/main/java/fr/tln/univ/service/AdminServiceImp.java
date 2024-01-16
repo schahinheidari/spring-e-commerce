@@ -8,9 +8,11 @@ import fr.tln.univ.model.dto.AdminDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Admin;
 import fr.tln.univ.model.entities.UserSession;
+import fr.tln.univ.model.mapper.AdminMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +23,24 @@ public class AdminServiceImp implements AdminService{
     private AdminRepository adminRepository;
     private LoginLogoutServiceImp loginService;
     private SessionRepository sessionRepository;
+    private AdminMapper adminMapper;
 
     @Override
+    public AdminDto addAdmin(AdminDto adminDto) {
+        Admin admin = adminMapper.mapAdminDtoToAdmin(adminDto);
+        Admin result= save(admin);
+       return adminMapper.mapAdminToAdminDto(result);
+
+    }
+    @Override
     public Admin addAdmin(Admin admin) {
+        return save(admin);
+    }
+
+    private Admin save(Admin admin) {
         return adminRepository.save(admin);
     }
+
 
     @Override
     public List<Admin> getAllAdmins() {

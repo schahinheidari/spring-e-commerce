@@ -21,15 +21,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/commande")
 public class CommandeController {
 
-    CommandeServiceImp commandeServiceImp;
-    CommandeRepository commandeRepository;
-    CommandeService commandeService;
-    CommandeMapper commandeMapper;
-    ClientServiceImp clientServiceImp;
+    @Autowired
+    private CommandeServiceImp commandeService;
+    
+    @Autowired
+    private CommandeMapper commandeMapper;
+    @Autowired
+    private ClientServiceImp clientServiceImp;
 
     /*    public ResponseEntity<List<CommandeDto>> getAllCommande(){
             List<CommandeDto> commandeList = commandeService.getAllCommande();
@@ -48,7 +49,7 @@ public class CommandeController {
     }
     @GetMapping("/list")
     public List<Commande> getAllCommande() {
-        List<Commande> listOfAllCommande = commandeServiceImp.getAllCommandes();
+        List<Commande> listOfAllCommande = commandeService.getAllCommandes();
         return listOfAllCommande;
     }
 
@@ -58,22 +59,22 @@ public class CommandeController {
     }
     @PutMapping("/{id}")
     public Commande updateCommande(@PathVariable Integer id, @Valid @RequestBody CommandeDto commandeDto, @RequestHeader("token") String token) {
-        return commandeServiceImp.updateCommandeByCommande(commandeDto, id, token);
+        return commandeService.updateCommandeByCommande(commandeDto, id, token);
     }
     @GetMapping("/list/{date}")
     public List<Commande> getAllCommandeByDate(@PathVariable LocalDate date) {
-        List<Commande> listOfAllCommande = commandeServiceImp.getAllCommandesByDate(date);
+        List<Commande> listOfAllCommande = commandeService.getAllCommandesByDate(date);
         return listOfAllCommande;
     }
     @GetMapping("/client/{id}")
     public Client getClientByCommandeid(@PathVariable Integer id) {
-        Client client = this.commandeServiceImp.getClientByCommandeid(id);
+        Client client = this.commandeService.getClientByCommandeid(id);
         return client;
     }
 
     @DeleteMapping("/{id}")
     public void deleteCommande(Integer id) {
-        commandeServiceImp.deleteCommande(id);
+        commandeService.deleteCommande(id);
     }
 
 

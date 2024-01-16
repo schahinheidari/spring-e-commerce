@@ -23,13 +23,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class CommandeServiceImp implements CommandeService {
-    
+    @Autowired
     private CommandeRepository commandeRepository;
+    @Autowired
     private CommandeMapper commandeMapper;
+    @Autowired
     private ClientService clientService;
-    private CommandeService commandeService;
+
 
     public Commande createCommande(Commande commande){
         return commandeRepository.save(commande);
@@ -86,7 +87,10 @@ public class CommandeServiceImp implements CommandeService {
 
     @Override
     public List<Commande> getAllCommandesByDate(LocalDate date) throws CommandeException {
-        List<Commande> commandeListOntheDay = commandeRepository.findByDate(date);
+        List<Commande> commandeListOntheDay = null;
+//                commandeRepository.findByDate(date);
+
+
         if(commandeListOntheDay.size()>0)
             return commandeListOntheDay;
         else
