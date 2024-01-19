@@ -3,9 +3,9 @@ package fr.tln.univ.service;
 import fr.tln.univ.dao.AdminRepository;
 import fr.tln.univ.dao.ClientRepository;
 import fr.tln.univ.dao.SessionRepository;
-import fr.tln.univ.exception.AdminNotFoundException;
-import fr.tln.univ.exception.ClientNotFoundException;
+import fr.tln.univ.exception.ConflictException;
 import fr.tln.univ.exception.LoginException;
+import fr.tln.univ.exception.NotFoundException;
 import fr.tln.univ.model.dto.AdminDto;
 import fr.tln.univ.model.dto.LoginDto;
 import fr.tln.univ.model.dto.SessionDto;
@@ -31,18 +31,18 @@ public class LoginLogoutServiceImp implements LoginLogoutService {
     @Override
     public Client loginClient(LoginDto loginDto) {
         Optional<Client> res = clientRepository.findByEmail(loginDto.getEmail());
-        if(res.isEmpty())
-            throw new ClientNotFoundException("Client record does not exist with given email");
+        if (res.isEmpty())
+            throw new ConflictException("Client record does not exist with given email");
         Client existingClient = res.get();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode(loginDto.getPassword());
-        if(!password.equals(existingClient.getPassword()))
+        if (!password.equals(existingClient.getPassword()))
             throw new LoginException("Invalid password");
         return existingClient;
     }
 
     @Override
-    public SessionDto logoutClient(SessionDto sessionToken) {
+    public SessionDto logout(SessionDto sessionToken) {
         return getSessionDto(sessionToken);
     }
 
@@ -50,11 +50,11 @@ public class LoginLogoutServiceImp implements LoginLogoutService {
         String token = sessionToken.getToken();
         checkTokenStatus(token);
         Optional<UserSession> opt = sessionRepository.findByToken(token);
-        if(opt.isEmpty())
+        if (opt.isEmpty())
             throw new LoginException("User not logged in. Invalid session token. Login Again.");
         UserSession session = opt.get();
         sessionRepository.delete(session);
-        sessionToken.setMessage("Logged out sucessfully.");
+        sessionToken.setMessage("Logged out successfully.");
         return sessionToken;
     }
 
@@ -62,19 +62,18 @@ public class LoginLogoutServiceImp implements LoginLogoutService {
     @Override
     public void checkTokenStatus(String token) {
         Optional<UserSession> opt = sessionRepository.findByToken(token);
-        if(opt.isPresent()) {
+        if (opt.isPresent()) {
             UserSession session = opt.get();
             LocalDateTime endTime = session.getSessionEndTime();
             boolean flag = false;
-            if(endTime.isBefore(LocalDateTime.now())) {
+            if (endTime.isBefore(LocalDateTime.now())) {
                 sessionRepository.delete(session);
                 flag = true;
             }
             deleteExpiredTokens();
-            if(flag)
+            if (flag)
                 throw new LoginException("Session expired. Login Again");
-        }
-        else {
+        } else {
             throw new LoginException("User not logged in. Invalid session token. Please login first.");
         }
     }
@@ -84,20 +83,14 @@ public class LoginLogoutServiceImp implements LoginLogoutService {
     @Override
     public Admin loginAdmin(AdminDto adminDto) {
         Optional<Admin> res = adminRepository.findByEmail(adminDto.getEmail());
-        if(res.isEmpty())
-            throw new AdminNotFoundException("Admin record does not exist with given email address");
+        if (res.isEmpty())
+            throw new NotFoundException("Admin record does not exist with given email address");
         Admin existingAdmin = res.get();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode(adminDto.getPassword());
-        if(!password.equals(existingAdmin.getPassword()))
+        if (!password.equals(existingAdmin.getPassword()))
             throw new LoginException("Invalid password");
         return existingAdmin;
-    }
-
-    // Method to logout a admin and delete his session token
-    @Override
-    public SessionDto logoutAdmin(SessionDto session) {
-        return getSessionDto(session);
     }
 
     // Method to delete expired tokens
@@ -106,11 +99,11 @@ public class LoginLogoutServiceImp implements LoginLogoutService {
         System.out.println("Inside delete tokens");
         List<UserSession> users = sessionRepository.findAll();
         System.out.println(users);
-        if(users.size() > 0) {
-            for(UserSession user:users) {
+        if (!users.isEmpty()) {
+            for (UserSession user : users) {
                 System.out.println(user.getUserId());
                 LocalDateTime endTime = user.getSessionEndTime();
-                if(endTime.isBefore(LocalDateTime.now())) {
+                if (endTime.isBefore(LocalDateTime.now())) {
                     System.out.println(user.getUserId());
                     sessionRepository.delete(user);
                 }

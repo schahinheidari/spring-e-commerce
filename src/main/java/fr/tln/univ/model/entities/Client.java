@@ -14,19 +14,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@RequiredArgsConstructor
 public class Client implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name= "NAME")
-    @Pattern(regexp="[A-Za-z\\s]+", message="First Name should contains alphabets only")
+    @Column(name = "NAME")
+    @Pattern(regexp = "[A-Za-z\\s]+", message = "First Name should contains alphabets only")
     private String name;
 
     @Column(name = "FAMILY")
-    @Pattern(regexp="[A-Za-z\\s]+", message="Last Name should contains alphabets only")
+    @Pattern(regexp = "[A-Za-z\\s]+", message = "Last Name should contains alphabets only")
     private String family;
 
     @Email
@@ -34,7 +33,7 @@ public class Client implements Serializable {
     private String email;
 
     @Column(name = "PASSWORD", nullable = false)
-    @Pattern(regexp="[A-Za-z0-9!@#$%^&*_]{8,15}", message="Please Enter a valid Password")
+    @Pattern(regexp = "[A-Za-z0-9!@#$%^&*_]{8,15}", message = "Please Enter a valid Password")
     private String password;
 
     @OneToMany(mappedBy = "client")

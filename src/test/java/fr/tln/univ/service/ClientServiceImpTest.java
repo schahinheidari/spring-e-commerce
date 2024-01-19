@@ -3,7 +3,7 @@ package fr.tln.univ.service;
 
 import fr.tln.univ.dao.ClientRepository;
 import fr.tln.univ.dao.SessionRepository;
-import fr.tln.univ.exception.ClientException;
+import fr.tln.univ.exception.ConflictException;
 import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.mapper.ClientMapper;
@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,9 +59,10 @@ class ClientServiceImpTest {
     void shouldClientByIdReturnAClient() {
         when(clientRepository.findById(1)).thenReturn(Optional.of(client));
         when(clientMapper.mapClientToClientDto(client)).thenReturn(clientDto);
-        ClientDto clientDto1 = clientServiceImp.getClientById(1);
-        Assertions.assertEquals(clientDto1.getId(), 1);
+        Client client1 = clientServiceImp.getClientById(1);
+        Assertions.assertEquals(client1.getId(), 1);
     }
+
     @Test
     void removeAClientById() {
         when(clientRepository.findById(1)).thenReturn(Optional.of(client));
@@ -82,14 +83,15 @@ class ClientServiceImpTest {
     @Test
     void shouldAddClientThrowExceptionWhenEmailExist() {
         when(clientRepository.findByEmail("email")).thenReturn(Optional.of(client));
-        Assertions.assertThrows(ClientException.class
+        Assertions.assertThrows(ConflictException.class
                 , () -> clientServiceImp.addClient(client));
     }
+
     @Test
     void shouldAddClientSuccessfully() {
         when(clientRepository.findByEmail("email")).thenReturn(Optional.empty());
         when(clientRepository.save(client)).thenReturn(client);
-        Assertions.assertEquals(1,clientServiceImp.addClient(client).getId());
+        Assertions.assertEquals(1, clientServiceImp.addClient(client).getId());
     }
 /*    @Test
     void updateClientPassword() {

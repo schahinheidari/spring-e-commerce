@@ -1,25 +1,27 @@
 package fr.tln.univ.service;
 
-import fr.tln.univ.exception.AdminException;
 import fr.tln.univ.model.dto.AdminDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Admin;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface AdminService {
-    public Admin addAdmin(Admin admin);
+    Admin add(Admin admin);
 
-    public List<Admin> getAllAdmins() throws AdminException;
+    List<Admin> getAll();
 
-    public Admin getAdminById(Integer adminId)throws AdminException;
+    Admin getById(Integer adminId);
 
-    public Admin getCurrentlyLoggedInAdmin(String token) throws AdminException;
+    Admin getCurrentlyLoggedInAdmin(String token);
 
-    public SessionDto updateAdminPassword(AdminDto adminDto, String token) throws AdminException;
+    SessionDto updateAdminPassword(AdminDto adminDto, String token);
 
-    public Admin updateAdmin(Admin admin, String token)throws AdminException;
+    Admin update(Admin admin, String token);
 
-    public void deleteAdminById(Integer adminId)throws AdminException;
+    void deleteById(Integer adminId);
 
+    Page<Admin> paging(Pageable pageable);
 }

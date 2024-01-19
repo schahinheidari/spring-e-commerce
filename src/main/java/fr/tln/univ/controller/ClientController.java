@@ -1,14 +1,14 @@
 package fr.tln.univ.controller;
 
-import fr.tln.univ.dao.ClientRepository;
 import fr.tln.univ.model.dto.ClientDto;
-import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Client;
+import fr.tln.univ.model.mapper.ClientMapper;
 import fr.tln.univ.service.ClientServiceImp;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,40 +25,43 @@ import java.util.List;
 public class ClientController {
 
     private final ClientServiceImp clientServiceImp;
-    private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
 
     @PostMapping("/save")
-    public ResponseEntity<Client> addClient(@Valid @RequestBody Client client) {
-        Client addClient = clientServiceImp.addClient(client);
-        System.out.println("Client" + client);
-        return new ResponseEntity<>(addClient, HttpStatus.CREATED);
+    public ResponseEntity<ClientDto> add(@Valid @RequestBody Client client) {
+        Client client1 = clientServiceImp.addClient(client);
+        return new ResponseEntity<>(clientMapper.mapClientToClientDto(client1), HttpStatus.CREATED);
     }
 
     @GetMapping("/find/{id}")
-    public ClientDto getClientById(@PathVariable("id") Integer id) {
-        return clientServiceImp.getClientById(id);
+    public ResponseEntity<ClientDto> getById(@PathVariable("id") Integer id) {
+        Client client = clientServiceImp.getClientById(id);
+        return ResponseEntity.ok(clientMapper.mapClientToClientDto(client));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ClientDto>> getAllClients() {
-        List<ClientDto> clientList = clientServiceImp.getAllClients();
-        return ResponseEntity.ok().body(clientList);
+    public ResponseEntity<List<ClientDto>> getAll() {
+        List<Client> clientList = clientServiceImp.getAllClients();
+        return ResponseEntity.ok(clientMapper.listClientToListClientDtoMapper(clientList));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Client> updateClient(@RequestBody Client client, @RequestHeader("token") String token) {
+    public ResponseEntity<ClientDto> update(@RequestBody Client client
+            , @RequestHeader("token") String token) {
         Client updatedClient = clientServiceImp.updateClient(client, token);
-        return new ResponseEntity<>(updatedClient, HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(clientMapper.mapClientToClientDto(updatedClient));
     }
 
-    // Handler to update customer password
+/*    // Handler to update customer password
     @PutMapping("/update/password")
-    public ResponseEntity<SessionDto> updateClientPassword(@Valid @RequestBody ClientDto clientDto, @RequestHeader("token") String token) {
-        return new ResponseEntity<>(clientServiceImp.updateClientPassword(clientDto, token), HttpStatus.ACCEPTED);
-    }
+    public ResponseEntity<SessionDto> updateClientPassword(@Valid @RequestBody ClientDto clientDto
+            , @RequestHeader("token") String token) {
+        return new ResponseEntity<>(clientServiceImp.updateClientPassword(clientDto, token)
+                , HttpStatus.ACCEPTED);
+    }*/
 
     @DeleteMapping("/delete/{id}")
-    public void deleteClient(@PathVariable Integer id) {
+    public void delete(@PathVariable Integer id) {
         clientServiceImp.deleteClient(id);
     }
 
@@ -68,17 +71,19 @@ public class ClientController {
         String password = bCryptPasswordEncoder.encode(client.getPassword());
         client.setPassword(password);
         client.setEmail(client.getEmail());
-        clientRepository.save(client);
+        clientServiceImp.addClient(client);
         return null;
     }
 
-    @GetMapping(value = "paging/{page}/{size}")
+    @GetMapping("/paging/{page}/{size}")
     public Page<Client> paging(@PathVariable int page, @PathVariable int size) {
-        return clientRepository.findAll(PageRequest.of(page, size, Sort.by("name").ascending()));
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+        return clientServiceImp.paging(pageable);
     }
 
     @GetMapping("/find/command/{id}")
-    public Client getClientByCommandId(@PathVariable Integer id) {
-        return clientServiceImp.getClientByCommandId(id);
+    public ResponseEntity<ClientDto> getByCommandId(@PathVariable Integer id) {
+        Client client = clientServiceImp.getClientByCommandId(id);
+        return ResponseEntity.ok().body(clientMapper.mapClientToClientDto(client));
     }
 }

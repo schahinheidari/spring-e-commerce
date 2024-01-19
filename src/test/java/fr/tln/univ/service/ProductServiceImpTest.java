@@ -1,9 +1,9 @@
-/*
 package fr.tln.univ.service;
 
-import fr.tln.univ.dao.ProduitRepository;
+import fr.tln.univ.dao.ProductRepository;
 import fr.tln.univ.enums.ProductStatus;
-import fr.tln.univ.exception.ProduitNotFoundException;
+import fr.tln.univ.exception.ConflictException;
+import fr.tln.univ.exception.NotFoundException;
 import fr.tln.univ.model.dto.ProductDto;
 import fr.tln.univ.model.entities.Product;
 import org.junit.jupiter.api.Assertions;
@@ -25,13 +25,13 @@ import static org.mockito.Mockito.when;
 class ProductServiceImpTest {
 
     @Mock
-    private ProduitRepository produitRepository;
+    private ProductRepository productRepository;
 
     @InjectMocks
-    private ProduitServiceImp produitServiceImp;
+    private ProductServiceImp produitServiceImp;
 
     ArrayList<Product> products;
-    List<ProductDto> produitList;
+    List<ProductDto> productList;
     Product product;
     ProductStatus status;
 
@@ -41,9 +41,9 @@ class ProductServiceImpTest {
         products.add(new Product());
         products.add(new Product());
 
-        produitList = new ArrayList<>();
-        produitList.add(new ProductDto());
-        produitList.add(new ProductDto());
+        productList = new ArrayList<>();
+        productList.add(new ProductDto());
+        productList.add(new ProductDto());
 
         product = new Product();
 
@@ -54,70 +54,70 @@ class ProductServiceImpTest {
 
     @Test
     void addProduit() {
-        when(produitRepository.save(product)).thenReturn(product);
-        Product result = produitServiceImp.addProduit("token", product);
+        when(productRepository.save(product)).thenReturn(product);
+        Product result = produitServiceImp.add("token", product);
         assertEquals(product, result);
-        produitRepository.save(product);
+        productRepository.save(product);
     }
 
     @Test
-    void getProduitById_existingId_shouldReturnProduit() throws ProduitNotFoundException {
+    void getProduitById_existingId_shouldReturnProduit(){
         int id = 1;
-        when(produitRepository.findById(id)).thenReturn(Optional.of(product));
-        Product result = produitServiceImp.getProduitById(id);
+        when(productRepository.findById(id)).thenReturn(Optional.of(product));
+        Product result = produitServiceImp.getById(id);
         assertEquals(product, result);
     }
     @Test
     void getProduitById_nonExistingId_shouldThrowProduitNotFoundException() {
         int id = 1;
-        when(produitRepository.findById(id)).thenReturn(Optional.empty());
-        assertThrows(ProduitNotFoundException.class, () -> produitServiceImp.getProduitById(id));
+        when(productRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> produitServiceImp.getById(id));
     }
-    @Test
-    void deleteProduit_existingId_shouldDeleteProduit() throws ProduitNotFoundException {
+/*    @Test
+    void deleteProduit_existingId_shouldDeleteProduit(){
         int id = 1;
-        when(produitRepository.findById(id)).thenReturn(Optional.of(product));
-        String result = produitServiceImp.deleteProduit(id);
+        when(productRepository.findById(id)).thenReturn(Optional.of(product));
+        String result = produitServiceImp.deleteById(id);
         assertEquals("Product deleted from catalog", result);
-        produitRepository.delete(product);
-    }
+        productRepository.delete(product);
+    }*/
     @Test
     void deleteProduit_nonExistingId_shouldThrowProduitNotFoundException() {
         int id = 1;
-        when(produitRepository.findById(id)).thenReturn(Optional.empty());
-        assertThrows(ProduitNotFoundException.class, () -> produitServiceImp.deleteProduit(id));
+        when(productRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> produitServiceImp.deleteById(id));
     }
     @Test
-    void updateProduit_existingProduit_shouldReturnUpdatedProduit() throws ProduitNotFoundException {
-        when(produitRepository.findById(product.getId())).thenReturn(Optional.of(product));
-        when(produitRepository.save(product)).thenReturn(product);
-        Product result = produitServiceImp.updateProduit(product);
+    void updateProduit_existingProduit_shouldReturnUpdatedProduit(){
+        when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        when(productRepository.save(product)).thenReturn(product);
+        Product result = produitServiceImp.update(product);
         assertEquals(product, result);
     }
     @Test
     void updateProduit_nonExistingProduit_shouldThrowProduitNotFoundException() {
-        when(produitRepository.findById(product.getId())).thenReturn(Optional.empty());
-        assertThrows(ProduitNotFoundException.class, () -> produitServiceImp.updateProduit(product));
+        when(productRepository.findById(product.getId())).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> produitServiceImp.update(product));
     }
 
     @Test
     void getAllProduits() {
-        when(produitRepository.findAll()).thenReturn(products);
-        Assertions.assertEquals(2,produitServiceImp.getAllProduits().size());
+        when(productRepository.findAll()).thenReturn(products);
+        Assertions.assertEquals(2,produitServiceImp.getAll().size());
     }
 
     @Test
     void createProduit() {
-        when(produitRepository.save(product)).thenReturn(product);
-        Product result = produitServiceImp.addProduit("token", product);
+        when(productRepository.save(product)).thenReturn(product);
+        Product result = produitServiceImp.add("token", product);
         assertEquals(product, result);
-        produitRepository.save(product);
+        productRepository.save(product);
     }
 
-    @Test
+/*    @Test
     void getProduitsOfStatus() {
-        when(produitRepository.getProduitsByProduitStatus(status)).thenReturn(produitList);
-        List<ProductDto> result = produitServiceImp.getProduitsOfStatus(status);
+        when(productRepository.getByStatus(status)).thenReturn(productList);
+        List<Product> result = produitServiceImp.getByStatus(status);
         assertEquals(2, result.size());
-    }
-}*/
+    }*/
+}

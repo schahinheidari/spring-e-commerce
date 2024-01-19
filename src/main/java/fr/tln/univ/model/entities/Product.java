@@ -9,8 +9,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Produit", indexes = {
-        @Index(name = "idx_produit_quantity", columnList = "QUANTITY")
+@Table(name = "Product", indexes = {
+        @Index(name = "idx_product_quantity", columnList = "QUANTITY")
 })
 @Setter
 @Getter
@@ -43,7 +43,7 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PRODUIT_STATUS")
-    private ProductStatus productStatus;
+    private ProductStatus status;
 
 
-    }
+}

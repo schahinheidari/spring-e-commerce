@@ -38,14 +38,10 @@ public class LoginLogoutController {
         return new ResponseEntity<>(loginService.loginClient(loginDto), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = "/logout/client", consumes = "application/json")
-    public ResponseEntity<SessionDto> logoutClient(@RequestBody SessionDto sessionToken){
-        return new ResponseEntity<>(loginService.logoutClient(sessionToken), HttpStatus.ACCEPTED);
-    }
-
+    /*********** SELLER REGISTER LOGIN LOGOUT HANDLER ************/
     @PostMapping(value = "/register/admin", consumes = "application/json")
     public ResponseEntity<Admin> registerAdminAccount(@Valid @RequestBody Admin admin) {
-        return new ResponseEntity<>(adminServiceImp.addAdmin(admin), HttpStatus.CREATED);
+        return new ResponseEntity<>(adminServiceImp.add(admin), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/login/admin", consumes = "application/json")
@@ -54,8 +50,10 @@ public class LoginLogoutController {
     }
 
     @PostMapping(value = "/logout/admin", consumes = "application/json")
-    public ResponseEntity<SessionDto> logoutAdmin(@RequestBody SessionDto sessionToken){
-        return new ResponseEntity<>(loginService.logoutAdmin(sessionToken), HttpStatus.ACCEPTED);
+    public ResponseEntity<Void> logout(@RequestBody SessionDto sessionToken){
+        loginService.logout(sessionToken);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
 

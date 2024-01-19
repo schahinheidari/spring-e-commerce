@@ -3,7 +3,7 @@ package fr.tln.univ.controller;
 import fr.tln.univ.enums.ProductStatus;
 import fr.tln.univ.model.dto.ProductDto;
 import fr.tln.univ.model.entities.Product;
-import fr.tln.univ.service.ProductService;
+import fr.tln.univ.model.mapper.ProductMapper;
 import fr.tln.univ.service.ProductServiceImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,43 +18,43 @@ import java.util.List;
 @RequestMapping(path = "/product/v1")
 public class ProductController {
 
-    private final ProductServiceImp produitServiceImp;
-    private final ProductService productService;
+    private final ProductServiceImp productServiceImp;
+    private final ProductMapper productMapper;
 
     @PostMapping
-    public ResponseEntity<Product> add(@RequestHeader("token") String token, @Valid @RequestBody Product product) {
-        Product prod = productService.add(token, product);
-        return new ResponseEntity<>(prod, HttpStatus.ACCEPTED);
+    public ResponseEntity<ProductDto> add(@RequestHeader("token") String token
+            , @Valid @RequestBody Product product) {
+        Product product1 = productServiceImp.add(token, product);
+        return ResponseEntity.ok(productMapper.mapProductToProductDto(product1));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Integer id) {
-        String res = productService.deleteById(id);
-        return new ResponseEntity<>(res, HttpStatus.OK);
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id) {
+        productServiceImp.deleteById(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@Valid @RequestBody Product product) {
-        Product prod = productService.update(product);
-        return new ResponseEntity<>(prod, HttpStatus.OK);
+    public ResponseEntity<ProductDto> update(@Valid @RequestBody Product product) {
+        Product product1 = productServiceImp.update(product);
+        return ResponseEntity.ok(productMapper.mapProductToProductDto(product1));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Integer id) {
-        Product product = productService.getById(id);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<ProductDto> getById(@PathVariable Integer id) {
+        Product product = productServiceImp.getById(id);
+        return ResponseEntity.ok(productMapper.mapProductToProductDto(product));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Product>> getAll() {
-        List<Product> productList = produitServiceImp.getAll();
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+    public ResponseEntity<List<ProductDto>> getAll() {
+        List<Product> productList = productServiceImp.getAll();
+        return ResponseEntity.ok(productMapper.listProductToListProductDto(productList));
     }
 
     @GetMapping("/status/{status}")
     public ResponseEntity<List<ProductDto>> getProductsOfStatus(@PathVariable String status) {
-        List<ProductDto> produitList = produitServiceImp.getByStatus(ProductStatus.valueOf(status.toUpperCase()));
-        return new ResponseEntity<>(produitList, HttpStatus.OK);
+        List<Product> productList = productServiceImp.getByStatus(ProductStatus.valueOf(status.toUpperCase()));
+        return ResponseEntity.ok(productMapper.listProductToListProductDto(productList));
     }
-
 }

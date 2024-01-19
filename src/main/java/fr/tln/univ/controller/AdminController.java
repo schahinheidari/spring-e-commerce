@@ -1,10 +1,12 @@
 package fr.tln.univ.controller;
 
-import fr.tln.univ.model.dto.AdminDto;
-import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Admin;
 import fr.tln.univ.service.AdminServiceImp;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,21 +22,21 @@ public class AdminController {
     private final AdminServiceImp adminServiceImp;
 
     @PostMapping("/save")
-    public ResponseEntity<Admin> addAdmin(@Valid @RequestBody Admin admin) {
-        Admin addAdmin = adminServiceImp.addAdmin(admin);
+    public ResponseEntity<Admin> add(@Valid @RequestBody Admin admin) {
+        Admin addAdmin = adminServiceImp.add(admin);
         System.out.println("Admin" + admin);
         return new ResponseEntity<>(addAdmin, HttpStatus.CREATED);
     }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Admin> getAdminById(@PathVariable Integer id) {
-        Admin getAdmin = adminServiceImp.getAdminById(id);
+    public ResponseEntity<Admin> getById(@PathVariable Integer id) {
+        Admin getAdmin = adminServiceImp.getById(id);
         return new ResponseEntity<>(getAdmin, HttpStatus.OK);
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Admin>> getAllAdmins() {
-        List<Admin> admins = adminServiceImp.getAllAdmins();
+    public ResponseEntity<List<Admin>> getAll() {
+        List<Admin> admins = adminServiceImp.getAll();
         return new ResponseEntity<>(admins, HttpStatus.OK);
     }
 
@@ -46,19 +48,25 @@ public class AdminController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Admin> updateAdmin(@RequestBody Admin admin, @RequestHeader("token") String token) {
-        Admin updatedAdmin = adminServiceImp.updateAdmin(admin, token);
+    public ResponseEntity<Admin> update(@RequestBody Admin admin, @RequestHeader("token") String token) {
+        Admin updatedAdmin = adminServiceImp.update(admin, token);
         return new ResponseEntity<>(updatedAdmin, HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/update/password")
-    public ResponseEntity<SessionDto> updateAdminPassword(@Valid @RequestBody AdminDto AdminDto, @RequestHeader("token") String token) {
+/*    @PutMapping("/update/password")
+    public ResponseEntity<SessionDto> updatePassword(@Valid @RequestBody AdminDto AdminDto, @RequestHeader("token") String token) {
         return new ResponseEntity<>(adminServiceImp.updateAdminPassword(AdminDto, token), HttpStatus.ACCEPTED);
-    }
+    }*/
 
     @DeleteMapping("/delete/{id}")
-    public void deleteAdminById(@PathVariable Integer id) {
-        adminServiceImp.deleteAdminById(id);
+    public void deleteById(@PathVariable Integer id) {
+        adminServiceImp.deleteById(id);
+    }
+
+    @GetMapping("/paging/{page}/{size}")
+    public Page<Admin> paging(@PathVariable int page, @PathVariable int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
+        return adminServiceImp.paging(pageable);
     }
 
 }

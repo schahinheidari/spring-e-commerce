@@ -34,6 +34,7 @@ public abstract class ClientMapper {
         }
         return clientDto;
     }
+
     public List<ClientDto> listClientToListClientDtoMapper(List<Client> clientList){
         List<ClientDto> clientDtoList = new ArrayList<>();
 
@@ -43,4 +44,5 @@ public abstract class ClientMapper {
         }
         return clientDtoList;
     }
+
 }

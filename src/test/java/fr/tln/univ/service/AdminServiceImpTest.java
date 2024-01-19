@@ -2,8 +2,8 @@ package fr.tln.univ.service;
 
 import fr.tln.univ.dao.AdminRepository;
 import fr.tln.univ.dao.SessionRepository;
-import fr.tln.univ.exception.AdminException;
 import fr.tln.univ.exception.LoginException;
+import fr.tln.univ.exception.NotFoundException;
 import fr.tln.univ.model.dto.AdminDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Admin;
@@ -49,69 +49,69 @@ class AdminServiceImpTest {
         admin.setEmail("email");
 
         adminDto = new AdminDto();
-        adminDto.setId(1);
+        adminDto.setEmail("<EMAIL>");
         adminDto.setPassword("<PASSWORD>");
-        
+
         userSession = new UserSession();
     }
 
     @Test
     void addAdmin() {
         when(adminRepository.save(admin)).thenReturn(admin);
-        Admin result = adminServiceImp.addAdmin(admin);
+        Admin result = adminServiceImp.add(admin);
         assertEquals(admin, result);
         adminRepository.save(admin);
     }
 
     @Test
-    void getAllAdmins_adminListNotEmpty_shouldReturnAdminList() throws AdminException {
+    void getAllAdmins_adminListNotEmpty_shouldReturnAdminList(){
         adminList.add(new Admin());
         when(adminRepository.findAll()).thenReturn(adminList);
-        List<Admin> result = adminServiceImp.getAllAdmins();
+        List<Admin> result = adminServiceImp.getAll();
         assertEquals(adminList, result);
     }
 
     @Test
     void getAllAdmins_adminListEmpty_shouldThrowAdminException() {
         when(adminRepository.findAll()).thenReturn(Collections.emptyList());
-        assertThrows(AdminException.class, () -> adminServiceImp.getAllAdmins());
+        assertThrows(NotFoundException.class, () -> adminServiceImp.getAll());
     }
 
     @Test
-    void getAdminById_existingId_shouldReturnAdmin() throws AdminException {
+    void getAdminById_existingId_shouldReturnAdmin(){
         when(adminRepository.findById(adminId)).thenReturn(Optional.of(admin));
-        Admin result = adminServiceImp.getAdminById(adminId);
+        Admin result = adminServiceImp.getById(adminId);
         assertEquals(admin, result);
     }
 
     @Test
     void getAdminById_nonExistingId_shouldThrowAdminException() {
         when(adminRepository.findById(adminId)).thenReturn(Optional.empty());
-        assertThrows(AdminException.class, () -> adminServiceImp.getAdminById(adminId));
+        assertThrows(NotFoundException.class, () -> adminServiceImp.getById(adminId));
     }
 
     @Test
     void updateAdmin_validAdminAndToken_shouldReturnUpdatedAdmin() {
         when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
         when(adminRepository.save(admin)).thenReturn(admin);
-        Admin result = adminServiceImp.updateAdmin(admin, token);
+        Admin result = adminServiceImp.update(admin, token);
         assertEquals(admin, result);
     }
 
     @Test
     void updateAdmin_nonExistingAdminId_shouldThrowAdminException() {
         when(adminRepository.findById(admin.getId())).thenReturn(Optional.empty());
-        assertThrows(AdminException.class, () -> adminServiceImp.updateAdmin(admin, token));
+        assertThrows(NotFoundException.class, () -> adminServiceImp.update(admin, token));
     }
 
     @Test
     void deleteAdminById() {
-        adminServiceImp.deleteAdminById(adminId);
+        adminServiceImp.deleteById(adminId);
         adminRepository.deleteById(adminId);
     }
 
     @Test
-    void getCurrentlyLoggedInAdmin_validToken_shouldReturnAdmin() throws AdminException {
+    void getCurrentlyLoggedInAdmin_validToken_shouldReturnAdmin(){
         userSession.setUserId(1);
         Optional<UserSession> userSessionOpt = Optional.of(userSession);
         when(sessionRepository.findByToken(token)).thenReturn(userSessionOpt);
@@ -138,7 +138,7 @@ class AdminServiceImpTest {
         assertNotNull(result);
         assertEquals(token, result.getToken());
         adminRepository.save(existingAdmin);
-        loginService.logoutAdmin(result);
+        loginService.logout(result);
     }
 
     @Test

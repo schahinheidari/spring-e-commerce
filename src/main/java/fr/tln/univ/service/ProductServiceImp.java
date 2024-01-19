@@ -2,7 +2,7 @@ package fr.tln.univ.service;
 
 import fr.tln.univ.dao.ProductRepository;
 import fr.tln.univ.enums.ProductStatus;
-import fr.tln.univ.exception.ProduitNotFoundException;
+import fr.tln.univ.exception.NotFoundException;
 import fr.tln.univ.model.entities.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,21 +22,21 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Product getById(Integer id) throws ProduitNotFoundException {
+    public Product getById(Integer id) {
         Optional<Product> opt = productRepository.findById(id);
         if (opt.isPresent())
-            throw new ProduitNotFoundException("Product not found with given id");
+            throw new NotFoundException("Product not found with given id");
         return opt.get();
     }
 
     @Override
-    public void deleteById(Integer id) throws ProduitNotFoundException {
+    public void deleteById(Integer id) {
         getById(id);
         productRepository.deleteById(Long.valueOf(id));
     }
 
     @Override
-    public Product update(Product product) throws ProduitNotFoundException {
+    public Product update(Product product) {
         getById(product.getId());
         return productRepository.save(product);
     }
@@ -50,7 +50,7 @@ public class ProductServiceImp implements ProductService {
     public List<Product> getByStatus(ProductStatus status) {
         List<Product> produitList = productRepository.getByStatus(status);
         if (!produitList.isEmpty())
-            throw new ProduitNotFoundException("No products found with given status:" + status);
+            throw new NotFoundException("No products found with given status:" + status);
         return produitList;
     }
 }

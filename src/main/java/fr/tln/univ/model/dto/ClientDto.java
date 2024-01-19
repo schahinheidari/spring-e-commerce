@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientDto {
+public class ClientDto{
 
     private Integer id;
 
@@ -19,9 +19,9 @@ public class ClientDto {
     @Pattern.List({
             //@Pattern(regexp = "^[\\p{Alpha} ]*$", message = "Name should contain only alphabets and space", groups = AllLevels.class),
             @Pattern(regexp = "^[\\p{Alpha} ]*$", message = "Name should contain only alphabets and space"),
-            @Pattern(regexp = "^[^\\s].*$", message = "Name should not start with space"),
-            @Pattern(regexp = "^.*[^\\s]$", message = "Name should not end with space"),
-            @Pattern(regexp = "^((?!  ).)*$", message = "Name should not contain consecutive spaces"),
+            @Pattern(regexp = "^\\S.*$", message = "Name should not start with space"),
+            @Pattern(regexp = "^.*\\S$", message = "Name should not end with space"),
+            @Pattern(regexp = "^((?! {2}).)*$", message = "Name should not contain consecutive spaces"),
             @Pattern(regexp = "^[^a-z].*$", message = "Name should not start with a lower case character")
     })
     private String name;
@@ -29,9 +29,9 @@ public class ClientDto {
     @NotNull(message = "Name cannot be null")
     @Pattern.List({
             @Pattern(regexp = "^[\\p{Alpha} ]*$", message = "family should contain only alphabets and space"),
-            @Pattern(regexp = "^[^\\s].*$", message = "family should not start with space"),
-            @Pattern(regexp = "^.*[^\\s]$", message = "family should not end with space"),
-            @Pattern(regexp = "^((?!  ).)*$", message = "family should not contain consecutive spaces"),
+            @Pattern(regexp = "^\\S.*$", message = "family should not start with space"),
+            @Pattern(regexp = "^.*\\S$", message = "family should not end with space"),
+            @Pattern(regexp = "^((?! {2}).)*$", message = "family should not contain consecutive spaces"),
             @Pattern(regexp = "^[^a-z].*$", message = "family should not start with a lower case character")
     })
     private String family;
@@ -43,5 +43,8 @@ public class ClientDto {
     private String password;
 
     private List<CommandDto> commandDtoList;
+
+    // user name
+    //@Pattern(regexp = "^[A-Za-z0-9+_.-]+@(.+)$", message = "User Name should contain only alphabets and space")
 
 }

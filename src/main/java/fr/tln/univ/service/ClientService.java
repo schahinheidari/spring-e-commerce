@@ -1,25 +1,24 @@
 package fr.tln.univ.service;
 
-import fr.tln.univ.exception.ClientNotFoundException;
-import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Client;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ClientService {
+    Client addClient(Client client);
 
-    public Client addClient(Client client) throws ClientNotFoundException;
+    Client updateClient(Client client, String token);
 
-    public Client updateClient(Client client, String token) throws ClientNotFoundException;
+    void deleteClient(Integer id);
 
-    public void deleteClient(Integer id) throws ClientNotFoundException;
+    Client getClientById(Integer id);
 
-    public ClientDto getClientById(Integer id) throws ClientNotFoundException;
+    List<Client> getAllClients();
 
-    public List<ClientDto> getAllClients() throws ClientNotFoundException;
+    Client getClientByCommandId(Integer id);
 
-    public SessionDto updateClientPassword(ClientDto clientDto, String token) throws ClientNotFoundException;
-
-    public ClientDto getClientByCommandId(Integer id);
+    Page<Client> paging(Pageable pageable);
 }

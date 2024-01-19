@@ -7,15 +7,13 @@ import fr.tln.univ.model.entities.Admin;
 import fr.tln.univ.model.entities.Client;
 
 public interface LoginLogoutService {
-    public Client loginClient(LoginDto loginDto);
+    Client loginClient(LoginDto loginDto);
 
-    public SessionDto logoutClient(SessionDto session);
+    SessionDto logout(SessionDto session);
 
-    public void checkTokenStatus(String token);
+    void checkTokenStatus(String token);
 
-    public void deleteExpiredTokens();
+    void deleteExpiredTokens();
 
-    public Admin loginAdmin(AdminDto adminDto);
-
-    public SessionDto logoutAdmin(SessionDto session);
+    Admin loginAdmin(AdminDto adminDto);
 }

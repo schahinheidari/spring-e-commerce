@@ -37,10 +37,8 @@ public class Command implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUIT_COMMANDE")
     private Product product;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private CommandState commandState;
-
-
-
 }

@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
@@ -25,6 +24,7 @@ public class UserSession {
     private Integer userId;
 
     private String userType;
+
     private LocalDateTime sessionStartTime;
 
     private LocalDateTime sessionEndTime;
