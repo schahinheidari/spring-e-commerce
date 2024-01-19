@@ -8,6 +8,7 @@ import fr.tln.univ.model.dto.CommandeDto;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.Commande;
 import fr.tln.univ.model.mapper.CommandeMapper;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CommandeServiceImp implements CommandeService {
     
     private CommandeRepository commandeRepository;
     private CommandeMapper commandeMapper;
     private ClientService clientService;
-    private CommandeService commandeService;
 
     public Commande createCommande(Commande commande){
         return commandeRepository.save(commande);

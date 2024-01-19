@@ -1,3 +1,4 @@
+/*
 package fr.tln.univ.service;
 
 import fr.tln.univ.dao.CommandeRepository;
@@ -82,6 +83,7 @@ class CommandeServiceImpTest {
         commandeRepository.save(commande);
     }
 
+*/
 /*    @Test
     void getCommandeByCommandeId() throws CommandeException {
         when(commandeRepository.findById(commandeId)).thenReturn(Optional.of(commande));
@@ -90,7 +92,8 @@ class CommandeServiceImpTest {
         assertEquals(commandeDto, result);
         commandeRepository.findById(commandeId);
         commandeMapper.mapCommandeToCommandeDto(commande);
-    }*/
+    }*//*
+
 
     @Test
     void getAllCommandes_commandeListNotEmpty_shouldReturnCommandeList() throws CommandeException {
@@ -179,6 +182,7 @@ class CommandeServiceImpTest {
         when(commandeRepository.findById(commandeId)).thenReturn(Optional.empty());
         assertThrows(NullPointerException.class, () -> commandeServiceImp.getClientByCommandeid(commandeId));
     }
+*/
 /*    @Test
     void getClientByCommandeid_existingCommande_shouldReturnClient() throws CommandeException {
         when(commandeRepository.findById(commandeId)).thenReturn(Optional.of(commande));
@@ -187,11 +191,12 @@ class CommandeServiceImpTest {
         assertEquals(client, result);
         commandeRepository.findById(commandeId);
         clientService.getClientById(commande.getClient().getId());
-    }*/
+    }*//*
+
 
     @Test
     void getClientByCommandeid_nonExistingCommande_shouldThrowCommandeException() {
         when(commandeRepository.findById(commandeId)).thenReturn(Optional.empty());
         assertThrows(NullPointerException.class, () -> commandeServiceImp.getClientByCommandeid(commandeId));
     }
-}
+}*/

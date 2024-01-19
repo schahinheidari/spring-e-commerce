@@ -5,18 +5,18 @@ import fr.tln.univ.enums.ProduitStatus;
 import fr.tln.univ.exception.ProduitNotFoundException;
 import fr.tln.univ.model.dto.ProduitDto;
 import fr.tln.univ.model.entities.Produit;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ProduitServiceImp implements ProduitService {
 
-    private ProduitRepository produitRepository;
+    private final ProduitRepository produitRepository;
     
     @Override
     public Produit addProduit(String token, Produit produit) {
@@ -48,8 +48,7 @@ public class ProduitServiceImp implements ProduitService {
         Optional<Produit> opt = produitRepository.findById(produit.getId());
         if (opt.isPresent()) {
             opt.get();
-            Produit prod1 = produitRepository.save(produit);
-            return prod1;
+            return produitRepository.save(produit);
         } else
             throw new ProduitNotFoundException("Product not found with given id");
     }
@@ -64,17 +63,8 @@ public class ProduitServiceImp implements ProduitService {
     }
 
     @Override
-    public List<ProduitDto> getAllProduitsOfAdmin(Integer id){
-        List<ProduitDto> produitList = produitRepository.getAllProduitsOfAdmin(id);
-        if (!produitList.isEmpty()) {
-            return produitList;
-        } else
-            throw new ProduitNotFoundException("No products");
-    }
-
-    @Override
     public  List<ProduitDto> getProduitsOfStatus(ProduitStatus status) {
-        List<ProduitDto> produitList = produitRepository.getProduitsOfStatus(status);
+        List<ProduitDto> produitList = produitRepository.getProduitsByProduitStatus(status);
         if (!produitList.isEmpty()) {
             return produitList;
         } else

@@ -12,13 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
 
-    List<Produit> findAllByName(String name);
-    Produit deleteById(Integer id);
     Optional<Produit> findById(Integer id);
 
-    List<ProduitDto> getAllProduitsOfAdmin(Integer id);
-
-    List<ProduitDto> getProduitsOfStatus(ProduitStatus status);
-
-    List<ProduitDto> findByStatus(ProduitStatus status);
+    List<ProduitDto> getProduitsByProduitStatus(ProduitStatus status);
 }

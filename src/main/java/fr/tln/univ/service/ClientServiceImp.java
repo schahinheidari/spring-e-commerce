@@ -9,19 +9,18 @@ import fr.tln.univ.exception.NotFoundException;
 import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Client;
-import fr.tln.univ.model.entities.Commande;
 import fr.tln.univ.model.entities.UserSession;
 import fr.tln.univ.model.mapper.ClientMapper;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ClientServiceImp implements ClientService{
 
 

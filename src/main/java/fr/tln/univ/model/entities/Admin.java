@@ -20,7 +20,7 @@ import java.util.List;
 public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer adminId;
+    private Integer id;
 
     @Column(name= "NAME")
     @NotNull(message="Please enter the first name")

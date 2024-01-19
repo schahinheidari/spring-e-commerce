@@ -8,19 +8,23 @@ import fr.tln.univ.model.dto.AdminDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Admin;
 import fr.tln.univ.model.entities.UserSession;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AdminServiceImp implements AdminService{
 
-    private AdminRepository adminRepository;
-    private LoginLogoutServiceImp loginService;
-    private SessionRepository sessionRepository;
+    private final AdminRepository adminRepository;
+    private final LoginLogoutServiceImp loginService;
+    private final SessionRepository sessionRepository;
 
     @Override
     public Admin addAdmin(Admin admin) {
@@ -28,6 +32,7 @@ public class AdminServiceImp implements AdminService{
     }
 
     @Override
+    @Cacheable(value = "allAdmins")
     public List<Admin> getAllAdmins() {
         List<Admin> adminList = adminRepository.findAll();
         if(adminList.size()>0) {
@@ -37,6 +42,7 @@ public class AdminServiceImp implements AdminService{
     }
 
     @Override
+    @Cacheable(value= "admins", key="#admin.name")
     public Admin getAdminById(Integer adminId) throws AdminException{
         Optional<Admin> admin = adminRepository.findById(adminId);
         if (admin.isEmpty())
@@ -50,11 +56,15 @@ public class AdminServiceImp implements AdminService{
             throw new LoginException("Invalid session token for admin");
         }
         loginService.checkTokenStatus(token);
-        Admin existingAdmin = adminRepository.findById(admin.getAdminId()).orElseThrow(() -> new AdminException("Admin not found for this Id: " + admin.getAdminId()));
+        Admin existingAdmin = adminRepository.findById(admin.getId()).orElseThrow(() -> new AdminException("Admin not found for this Id: " + admin.getId()));
         return adminRepository.save(admin);
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "allAdmins", allEntries = true),
+            @CacheEvict(value = "admin", key = "#id")
+    })
     public void deleteAdminById(Integer id){
         adminRepository.deleteById(id);
     }

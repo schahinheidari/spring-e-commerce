@@ -37,7 +37,7 @@ public class Produit {
     private String description;
     @Enumerated(EnumType.STRING)
     @Column(name = "PRODUIT_STATUS")
-    private ProduitStatus produit_status;
+    private ProduitStatus produitStatus;
 
 /*
     @OneToMany(mappedBy = "produit")

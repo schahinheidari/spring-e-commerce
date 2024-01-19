@@ -4,10 +4,7 @@ import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.dto.CommandeDto;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.Commande;
-import lombok.Builder;
-import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.ArrayList;
 import java.util.List;

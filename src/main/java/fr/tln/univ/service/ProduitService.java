@@ -18,8 +18,6 @@ public interface ProduitService {
 
     public List<Produit> getAllProduits();
 
-    public List<ProduitDto> getAllProduitsOfAdmin(Integer id);
-
     public List<ProduitDto> getProduitsOfStatus(ProduitStatus status);
 
 }

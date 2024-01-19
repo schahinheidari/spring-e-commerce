@@ -10,6 +10,7 @@ import fr.tln.univ.model.mapper.CommandeMapper;
 import fr.tln.univ.service.ClientServiceImp;
 import fr.tln.univ.service.CommandeService;
 import fr.tln.univ.service.CommandeServiceImp;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,24 +22,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/commande")
 public class CommandeController {
 
-    CommandeServiceImp commandeServiceImp;
-    CommandeRepository commandeRepository;
     CommandeService commandeService;
     CommandeMapper commandeMapper;
-    ClientServiceImp clientServiceImp;
 
-    /*    public ResponseEntity<List<CommandeDto>> getAllCommande(){
-            List<CommandeDto> commandeList = commandeService.getAllCommande();
-            return ResponseEntity.ok().body(commandeList);
-        }*/
     @PostMapping("/save")
     public ResponseEntity<Commande> addTheNewCommande(@Valid @RequestBody CommandeDto commandeDto, @RequestHeader("token") String token) {
         Commande saveCommande = commandeService.saveCommande(commandeDto, token);
-        return new ResponseEntity<Commande>(saveCommande, HttpStatus.CREATED);
+        return new ResponseEntity<>(saveCommande, HttpStatus.CREATED);
     }
 
     @GetMapping("/find/{id}")
@@ -48,33 +42,29 @@ public class CommandeController {
     }
     @GetMapping("/list")
     public List<Commande> getAllCommande() {
-        List<Commande> listOfAllCommande = commandeServiceImp.getAllCommandes();
+        List<Commande> listOfAllCommande = commandeService.getAllCommandes();
         return listOfAllCommande;
     }
 
-    @DeleteMapping("/{id}")
-    public Commande cancelCommandeByCommandeId(@PathVariable("id") Integer commandeId,@RequestHeader("token") String token){
-        return commandeService.cancelCommandeByCommandeId(commandeId,token);
-    }
     @PutMapping("/{id}")
     public Commande updateCommande(@PathVariable Integer id, @Valid @RequestBody CommandeDto commandeDto, @RequestHeader("token") String token) {
-        return commandeServiceImp.updateCommandeByCommande(commandeDto, id, token);
+        return commandeService.updateCommandeByCommande(commandeDto, id, token);
     }
     @GetMapping("/list/{date}")
     public List<Commande> getAllCommandeByDate(@PathVariable LocalDate date) {
-        List<Commande> listOfAllCommande = commandeServiceImp.getAllCommandesByDate(date);
-        return listOfAllCommande;
+        return commandeService.getAllCommandesByDate(date);
     }
     @GetMapping("/client/{id}")
     public Client getClientByCommandeid(@PathVariable Integer id) {
-        Client client = this.commandeServiceImp.getClientByCommandeid(id);
-        return client;
+        return this.commandeService.getClientByCommandeid(id);
     }
 
+/*
     @DeleteMapping("/{id}")
     public void deleteCommande(Integer id) {
         commandeServiceImp.deleteCommande(id);
     }
+*/
 
 
 

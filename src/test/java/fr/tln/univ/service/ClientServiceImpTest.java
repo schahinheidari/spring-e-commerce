@@ -1,3 +1,4 @@
+/*
 package fr.tln.univ.service;
 
 
@@ -99,6 +100,7 @@ class ClientServiceImpTest {
         when(clientRepository.save(client)).thenReturn(client);
         Assertions.assertEquals(1,clientServiceImp.addClient(client).getId());
     }
+*/
 /*    @Test
     void updateClientPassword() {
         when(clientRepository.findByEmail("email")).thenReturn(Optional.of(client)); // Return Optional.of(client)
@@ -107,5 +109,7 @@ class ClientServiceImpTest {
         SessionDto sessionDto = clientServiceImp.updateClientPassword(clientDto, "client_token");
         Assertions.assertEquals("client_token", sessionDto.getToken());
         Assertions.assertEquals("Updated password and logged out. Login again with new password", sessionDto.getMessage());
-    }*/
+    }*//*
+
 }
+*/

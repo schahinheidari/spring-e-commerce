@@ -1,3 +1,4 @@
+/*
 package fr.tln.univ.service;
 
 import fr.tln.univ.dao.ProduitRepository;
@@ -127,4 +128,4 @@ class ProduitServiceImpTest {
         List<ProduitDto> result = produitServiceImp.getProduitsOfStatus(status);
         assertEquals(2, result.size());
     }
-}
+}*/

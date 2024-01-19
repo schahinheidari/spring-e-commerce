@@ -5,6 +5,7 @@ import fr.tln.univ.model.dto.ProduitDto;
 import fr.tln.univ.model.entities.Produit;
 import fr.tln.univ.service.ProduitService;
 import fr.tln.univ.service.ProduitServiceImp;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping(path = "/products")
 public class ProduitController {
 
@@ -25,25 +26,25 @@ public class ProduitController {
     @PostMapping
     public ResponseEntity<Produit> addProduit(@RequestHeader("token") String token,@Valid @RequestBody Produit produit){
         Produit prod = produitService.addProduit(token, produit);
-        return new ResponseEntity<Produit>(prod, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(prod, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduit(@PathVariable("id") Integer id){
         String res = produitService.deleteProduit(id);
-        return new ResponseEntity<String>(res, HttpStatus.OK);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Produit> updateProduit(@Valid @RequestBody Produit produit){
         Produit prod = produitService.updateProduit(produit);
-        return new ResponseEntity<Produit>(prod, HttpStatus.OK);
+        return new ResponseEntity<>(prod, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Produit> getProduitById(@PathVariable("id") Integer id){
         Produit produit = produitService.getProduitById(id);
-        return new ResponseEntity<Produit>(produit, HttpStatus.OK);
+        return new ResponseEntity<>(produit, HttpStatus.OK);
     }
 
     @GetMapping("/list")
@@ -52,11 +53,11 @@ public class ProduitController {
         return new ResponseEntity<List<Produit>>(produitList, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+/*    @GetMapping("/{id}")
     public ResponseEntity<List<ProduitDto>> getAllProduitsOfAdmin(@PathVariable("id") Integer id){
         List<ProduitDto> produitList = produitServiceImp.getAllProduitsOfAdmin(id);
         return new ResponseEntity<List<ProduitDto>>(produitList, HttpStatus.OK);
-    }
+    }*/
 
     @GetMapping("/status/{status}")
     public ResponseEntity<List<ProduitDto>> getProduitsOfStatus(@PathVariable("status") String status){
