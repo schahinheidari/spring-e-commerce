@@ -5,23 +5,15 @@ import fr.tln.univ.dao.ClientRepository;
 import fr.tln.univ.dao.SessionRepository;
 import fr.tln.univ.exception.ClientException;
 import fr.tln.univ.model.dto.ClientDto;
-import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.mapper.ClientMapper;
-import fr.tln.univ.service.ClientServiceImp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 

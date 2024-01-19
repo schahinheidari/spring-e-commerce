@@ -45,7 +45,7 @@ class AdminServiceImpTest {
     void setUp() {
         adminList = new ArrayList<>();
         admin = new Admin();
-        admin.setAdminId(1);
+        admin.setId(1);
         admin.setEmail("email");
 
         adminDto = new AdminDto();
@@ -92,7 +92,7 @@ class AdminServiceImpTest {
 
     @Test
     void updateAdmin_validAdminAndToken_shouldReturnUpdatedAdmin() {
-        when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.of(admin));
+        when(adminRepository.findById(admin.getId())).thenReturn(Optional.of(admin));
         when(adminRepository.save(admin)).thenReturn(admin);
         Admin result = adminServiceImp.updateAdmin(admin, token);
         assertEquals(admin, result);
@@ -100,7 +100,7 @@ class AdminServiceImpTest {
 
     @Test
     void updateAdmin_nonExistingAdminId_shouldThrowAdminException() {
-        when(adminRepository.findById(admin.getAdminId())).thenReturn(Optional.empty());
+        when(adminRepository.findById(admin.getId())).thenReturn(Optional.empty());
         assertThrows(AdminException.class, () -> adminServiceImp.updateAdmin(admin, token));
     }
 

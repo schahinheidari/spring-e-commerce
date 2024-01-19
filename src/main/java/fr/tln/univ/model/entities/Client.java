@@ -38,7 +38,7 @@ public class Client implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "client")
-    private List<Commande> commandeList;
+    private List<Command> commandList;
 
 
     public Client(Integer id, String name, String family, String email, String password) {

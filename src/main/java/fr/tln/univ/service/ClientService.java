@@ -15,10 +15,11 @@ public interface ClientService {
 
     public void deleteClient(Integer id) throws ClientNotFoundException;
 
-    public Client getClientById(Integer id) throws ClientNotFoundException;
+    public ClientDto getClientById(Integer id) throws ClientNotFoundException;
 
     public List<ClientDto> getAllClients() throws ClientNotFoundException;
 
     public SessionDto updateClientPassword(ClientDto clientDto, String token) throws ClientNotFoundException;
 
+    public ClientDto getClientByCommandId(Integer id);
 }

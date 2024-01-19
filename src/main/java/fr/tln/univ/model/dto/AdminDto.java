@@ -14,11 +14,11 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class AdminDto {
 
-    private Integer id;
     @NotNull(message = "Email cannot be null")
     @Email(message = "Email should be valid")
     @Pattern(regexp = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$", message = "Name should contain only alphabets and space")
     private String email;
+
     @Pattern(regexp="[A-Za-z0-9!@#$%^&*_]{8,15}", message="Please Enter a valid Password")
     private String password;
 

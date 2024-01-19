@@ -9,36 +9,35 @@ import fr.tln.univ.exception.NotFoundException;
 import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.dto.SessionDto;
 import fr.tln.univ.model.entities.Client;
-import fr.tln.univ.model.entities.Commande;
+import fr.tln.univ.model.entities.Command;
 import fr.tln.univ.model.entities.UserSession;
 import fr.tln.univ.model.mapper.ClientMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
-public class ClientServiceImp implements ClientService{
+public class ClientServiceImp implements ClientService {
 
-
-    private ClientRepository clientRepository;
-    private ClientMapper clientMapper;
-    private LoginLogoutServiceImp loginService;
-    private SessionRepository sessionRepository;
+    private final ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
+    private final CommandServiceImp commandServiceImp;
+    private final LoginLogoutServiceImp loginService;
+    private final SessionRepository sessionRepository;
 
     @Override
-    public Client addClient(Client client){
+    public Client addClient(Client client) {
         Optional<Client> clientOptional = clientRepository.findByEmail(client.getEmail());
         if (clientOptional.isPresent())
             throw new ClientException("Client is exist.");
         return clientRepository.save(client);
     }
 
-    public Client findByEmail(String email){
+    public Client findByEmail(String email) {
         Optional<Client> clientOptional = clientRepository.findByEmail(email);
         if (clientOptional.isEmpty())
             throw new NotFoundException("Client not found");
@@ -46,20 +45,19 @@ public class ClientServiceImp implements ClientService{
     }
 
     @Override
-    public List<ClientDto> getAllClients(){
+    public List<ClientDto> getAllClients() {
         List<Client> clientList = clientRepository.findAll();
         return clientMapper.listClientToListClientDtoMapper(clientList);
     }
 
     @Override
-    public ClientDto getClientById(Integer id){
+    public ClientDto getClientById(Integer id) {
         Client client = clientRepository.findById(id).orElse(null);
         return clientMapper.mapClientToClientDto(client);
-//        return clientRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void deleteClient(Integer id){
+    public void deleteClient(Integer id) {
         getClientById(id);
         clientRepository.deleteById(id);
     }
@@ -76,13 +74,13 @@ public class ClientServiceImp implements ClientService{
 
     @Override
     public SessionDto updateClientPassword(ClientDto clientDto, String token) {
-        if(!token.contains("client")) {
+        if (!token.contains("client")) {
             throw new LoginException("Invalid session token for client");
         }
         loginService.checkTokenStatus(token);
         UserSession user = sessionRepository.findByToken(token).get();
         Optional<Client> opt = clientRepository.findById(user.getUserId());
-        if(opt.isEmpty())
+        if (opt.isEmpty())
             throw new ClientNotFoundException("Client does not exist");
         Client existingClient = opt.get();
 
@@ -95,5 +93,9 @@ public class ClientServiceImp implements ClientService{
         return session;
     }
 
-
+    @Override
+    public ClientDto getClientByCommandId(Integer commandId) {
+        Command command = commandServiceImp.getById(commandId);
+        return getClientById(command.getClient().getId());
+    }
 }

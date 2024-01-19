@@ -1,12 +1,13 @@
 package fr.tln.univ.service;
 
 import fr.tln.univ.model.dto.AdminDto;
-import fr.tln.univ.model.dto.ClientDto;
+import fr.tln.univ.model.dto.LoginDto;
 import fr.tln.univ.model.dto.SessionDto;
-import fr.tln.univ.model.entities.UserSession;
+import fr.tln.univ.model.entities.Admin;
+import fr.tln.univ.model.entities.Client;
 
 public interface LoginLogoutService {
-    public UserSession loginClient(ClientDto clientDto);
+    public Client loginClient(LoginDto loginDto);
 
     public SessionDto logoutClient(SessionDto session);
 
@@ -14,9 +15,7 @@ public interface LoginLogoutService {
 
     public void deleteExpiredTokens();
 
-
-    public UserSession loginAdmin(AdminDto adminDto);
+    public Admin loginAdmin(AdminDto adminDto);
 
     public SessionDto logoutAdmin(SessionDto session);
-
 }

@@ -67,7 +67,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AdminException.class)
     public ResponseEntity<ErrorMessage> adminExceptionHandler(AdminException slre, WebRequest wr){
         log.error("exception: "+slre);
-        slre.printStackTrace();
+
         ErrorMessage err = new ErrorMessage(LocalDateTime.now(), slre.getMessage(), wr.getDescription(false));
         return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
     }
@@ -76,7 +76,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AdminNotFoundException.class)
     public ResponseEntity<ErrorMessage> adminNotFoundExceptionHandler(AdminNotFoundException snfe, WebRequest wr){
         log.error("exception: "+snfe);
-        snfe.printStackTrace();
+
         ErrorMessage err = new ErrorMessage(LocalDateTime.now(), snfe.getMessage(), wr.getDescription(false));
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
