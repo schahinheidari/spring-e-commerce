@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.data.redis.port",
+      "type": "java.lang.String",
+      "description": "Description for spring.data.redis.port."
+    },
+    {
+      "name": "spring.data.redis.host",
+      "type": "java.lang.String",
+      "description": "Description for spring.data.redis.host."
+    }
+  ] }
