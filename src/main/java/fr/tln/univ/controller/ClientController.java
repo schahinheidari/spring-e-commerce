@@ -2,7 +2,9 @@ package fr.tln.univ.controller;
 
 import fr.tln.univ.model.dto.ClientDto;
 import fr.tln.univ.model.entities.Client;
+import fr.tln.univ.model.entities.Product;
 import fr.tln.univ.model.mapper.ClientMapper;
+import fr.tln.univ.service.CartServiceImpl;
 import fr.tln.univ.service.ClientServiceImp;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class ClientController {
 
     private final ClientServiceImp clientServiceImp;
     private final ClientMapper clientMapper;
+    private final CartServiceImpl cartService;
 
     @PostMapping("/save")
     public ResponseEntity<ClientDto> add(@Valid @RequestBody Client client) {
@@ -86,4 +89,22 @@ public class ClientController {
         Client client = clientServiceImp.getClientByCommandId(id);
         return ResponseEntity.ok().body(clientMapper.mapClientToClientDto(client));
     }
+
+    @GetMapping("/cart/{clientId}/{quantity}/{productId}")
+    public ResponseEntity<String> addToCart(@PathVariable Integer clientId, @PathVariable Integer quantity, @PathVariable Integer productId ){
+        String mess = cartService.addProductToCart(clientId,quantity, productId);
+        return new ResponseEntity<>(mess, HttpStatus.OK);
+    }
+    @GetMapping("/updatingQuantity/{productId}/{quantity}/{clientId}")
+    public ResponseEntity<Product> updateQuantityOfProduct(@PathVariable Integer productId,@PathVariable Integer quantity,@PathVariable Integer clientId){
+        Product productdto = cartService.updateQuantity(productId, quantity, clientId);
+        return new  ResponseEntity<>(productdto,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/removeProductFromCart/{productId}/{clientId}")
+    public ResponseEntity<String> removeProductFromCart(@PathVariable Integer productId,@PathVariable Integer clientId){
+        String mess = cartService.removeProductfromCart(productId, clientId);
+        return new ResponseEntity<>(mess, HttpStatus.OK);
+    }
+
 }

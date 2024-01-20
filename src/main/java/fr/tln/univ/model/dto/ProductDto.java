@@ -4,7 +4,7 @@ public class ProductDto {
 
     private Integer code;
 
-    private int priceUnite;
+    private int priceUnit;
 
     private String name;
 

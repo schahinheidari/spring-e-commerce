@@ -1,7 +1,11 @@
 package fr.tln.univ.controller;
 
 import fr.tln.univ.model.entities.Admin;
+import fr.tln.univ.model.entities.Command;
+import fr.tln.univ.model.entities.Product;
 import fr.tln.univ.service.AdminServiceImp;
+import fr.tln.univ.service.CommandServiceImp;
+import fr.tln.univ.service.ProductServiceImp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +24,8 @@ import java.util.List;
 public class AdminController {
 
     private final AdminServiceImp adminServiceImp;
+    private final ProductServiceImp pService;
+    private final CommandServiceImp cService;
 
     @PostMapping("/save")
     public ResponseEntity<Admin> add(@Valid @RequestBody Admin admin) {
@@ -61,6 +67,24 @@ public class AdminController {
     @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable Integer id) {
         adminServiceImp.deleteById(id);
+    }
+
+    @DeleteMapping("/removeProduct/{productId}")
+    public ResponseEntity<Void> removeProduct(@PathVariable Integer productId){
+        pService.deleteById(productId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/getProductById/{productId}")
+    public ResponseEntity<Product> getProductById(@PathVariable Integer productId){
+        Product product1 = pService.getById(productId);
+        return new ResponseEntity<>(product1, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllOrders")
+    public ResponseEntity<List<Command>> getAllCommands(){
+        List<Command> commandList = cService.getAll();
+        return new ResponseEntity<>(commandList, HttpStatus.OK);
     }
 
     @GetMapping("/paging/{page}/{size}")

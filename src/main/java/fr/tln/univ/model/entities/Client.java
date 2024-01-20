@@ -1,5 +1,6 @@
 package fr.tln.univ.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,6 +39,10 @@ public class Client implements Serializable {
 
     @OneToMany(mappedBy = "client")
     private List<Command> commandList;
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Cart cart;
+
 
 
     public Client(Integer id, String name, String family, String email, String password) {

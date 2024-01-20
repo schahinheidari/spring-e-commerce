@@ -27,7 +27,7 @@ public class Product {
     private Integer code;
 
     @Column(name = "price")
-    private int priceUnite;
+    private int priceUnit;
 
     @Column(name = "NAME", nullable = false)
     private String name;

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/command")
+@RequestMapping("/command/v1")
 public class CommandController {
 
     private final CommandServiceImp commandServiceImp;
