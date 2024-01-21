@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @ViewScoped
-@Named("loginBean")
+@Named("commandBean")
 @Setter
 @Getter
 public class CommandBean implements Serializable {
