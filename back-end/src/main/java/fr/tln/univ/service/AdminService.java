@@ -15,8 +15,6 @@ public interface AdminService {
 
     Admin getById(Integer adminId);
 
-    Admin getCurrentlyLoggedInAdmin(String token);
-
     SessionDto updateAdminPassword(AdminDto adminDto, String token);
 
     Admin update(Admin admin, String token);

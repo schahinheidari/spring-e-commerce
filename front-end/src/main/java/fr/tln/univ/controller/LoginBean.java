@@ -11,9 +11,10 @@ import java.io.Serializable;
 
 @ViewScoped
 @Named("loginBean")
-public class LoginBean implements Serializable {
+public class LoginBean implements Serializable{
     private String email;
     private String password;
+    private String login;
 
     public String getEmail() {
         return email;
@@ -29,6 +30,17 @@ public class LoginBean implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+
+    // Getter and setter for login property
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
 

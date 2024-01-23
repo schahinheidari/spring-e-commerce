@@ -110,7 +110,7 @@ class AdminServiceImpTest {
         adminRepository.deleteById(adminId);
     }
 
-    @Test
+/*    @Test
     void getCurrentlyLoggedInAdmin_validToken_shouldReturnAdmin(){
         userSession.setUserId(1);
         Optional<UserSession> userSessionOpt = Optional.of(userSession);
@@ -118,13 +118,8 @@ class AdminServiceImpTest {
         when(adminRepository.findById(userSession.getUserId())).thenReturn(Optional.of(admin));
         Admin result = adminServiceImp.getCurrentlyLoggedInAdmin(token);
         assertEquals(admin, result);
-    }
+    }*/
 
-    @Test
-    void getCurrentlyLoggedInAdmin_invalidToken_shouldThrowLoginException() {
-        String token = "invalidToken";
-        assertThrows(LoginException.class, () -> adminServiceImp.getCurrentlyLoggedInAdmin(token));
-    }
 
     @Test
     void updateAdminPassword_validAdminToken_shouldReturnSessionDto() {

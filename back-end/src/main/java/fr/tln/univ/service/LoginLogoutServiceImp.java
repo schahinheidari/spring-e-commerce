@@ -13,7 +13,7 @@ import fr.tln.univ.model.entities.Admin;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.UserSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,10 +34,10 @@ public class LoginLogoutServiceImp implements LoginLogoutService {
         if (res.isEmpty())
             throw new ConflictException("Client record does not exist with given email");
         Client existingClient = res.get();
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+       /* BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode(loginDto.getPassword());
         if (!password.equals(existingClient.getPassword()))
-            throw new LoginException("Invalid password");
+            throw new LoginException("Invalid password");*/
         return existingClient;
     }
 
@@ -86,10 +86,10 @@ public class LoginLogoutServiceImp implements LoginLogoutService {
         if (res.isEmpty())
             throw new NotFoundException("Admin record does not exist with given email address");
         Admin existingAdmin = res.get();
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+/*        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode(adminDto.getPassword());
         if (!password.equals(existingAdmin.getPassword()))
-            throw new LoginException("Invalid password");
+            throw new LoginException("Invalid password");*/
         return existingAdmin;
     }
 

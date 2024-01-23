@@ -22,7 +22,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 19090:9090
+      - 9090:9090
     depends_on:
       - t-mysqldb
     environment:

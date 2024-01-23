@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -68,7 +68,7 @@ public class ClientController {
         clientServiceImp.deleteClient(id);
     }
 
-    @PostMapping(value = "/signup")
+/*    @PostMapping(value = "/signup")
     public String postStringUpPage(@ModelAttribute Client client) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String password = bCryptPasswordEncoder.encode(client.getPassword());
@@ -76,7 +76,7 @@ public class ClientController {
         client.setEmail(client.getEmail());
         clientServiceImp.addClient(client);
         return null;
-    }
+    }*/
 
     @GetMapping("/paging/{page}/{size}")
     public Page<Client> paging(@PathVariable int page, @PathVariable int size) {

@@ -1,0 +1,21 @@
+FROM amazoncorretto:11
+
+FROM openjdk:17 as build
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the project files and build
+COPY . /project
+RUN ls -la /app
+WORKDIR /project
+RUN mvn clean package
+
+# Download the JDBC driver
+USER root
+RUN apt-get update && \
+    apt-get install -y wget unzip && \
+    rm -rf /var/lib/apt/lists/* && \
+    wget https://repo1.maven.org/maven2/org/postgresql/postgresql/42.5.1/postgresql-42.5.1.jar \
+         -O /tmp/postgresql.jar

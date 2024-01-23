@@ -21,7 +21,7 @@ public class ProductBean implements Serializable {
     private String description;
     private int quantity;
     private List<ProductDto> products;
-    private boolean showCreateForm;
+//    private boolean showCreateForm;
     private Long productIdToSearch;
     private ProductDto searchedProduct;
 

@@ -67,7 +67,7 @@ public class AdminServiceImp implements AdminService {
         adminRepository.deleteById(id);
     }
 
-    @Override
+/*    @Override
     public Admin getCurrentlyLoggedInAdmin(String token) {
         if (!token.contains("admin")) {
             throw new LoginException("Invalid session token for admin");
@@ -76,7 +76,7 @@ public class AdminServiceImp implements AdminService {
         UserSession user = sessionRepository.findByToken(token).get();
         return adminRepository.findById(user.getUserId()).orElseThrow(()
                 -> new NotFoundException("Admin not found for this ID"));
-    }
+    }*/
 
     @Override
     public SessionDto updateAdminPassword(AdminDto adminDto, String token) {
