@@ -14,15 +14,15 @@ services:
     networks:
       ecommerce-backend:
 
-  ecommerce:
-    container_name: t-ecommerce
+  examFinal:
+    container_name: t-examFinal
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile2
     ports:
       - 9090:9090
     depends_on:
-      - t-pgsqldb
+      - my-postgresdb
     environment:
       - spring.datasource.url=jdbc.postgresql://localhost:5432/projectm2
       - spring.datasource.username=postgres
