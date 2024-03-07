@@ -10,6 +10,7 @@ import fr.tln.univ.model.entities.Admin;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.UserSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImp implements AdminService {

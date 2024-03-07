@@ -35,6 +35,15 @@ services:
       ecommerce-backend:
     restart: on-failure
 
+  ecommerce-python:
+    container_name: t-ecommerce-python
+    image: python:3.12
+    volumes:
+      - ./python-sources:/pythonFolder
+    working_dir: /pythonFolder
+    command: ["python", "hello.py"]
+    networks:
+      - ecommerce-backend
 
 
 
