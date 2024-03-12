@@ -8,12 +8,14 @@ import fr.tln.univ.model.entities.Cart;
 import fr.tln.univ.model.entities.Client;
 import fr.tln.univ.model.entities.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
@@ -24,6 +26,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public String addProductToCart(Integer clientId, Integer quantity, Integer productId) {
+        log.info("Adding product to cart. Client ID: {}, Product ID: {}, Quantity: {}", clientId, productId, quantity);
         Optional<Client> clientOptional = clientRepository.findById(clientId);
         if (clientOptional.isPresent()) {
             Client client = clientOptional.get();
@@ -55,14 +58,17 @@ public class CartServiceImpl implements CartService {
                 throw new NotFoundException("Product not found");
             }
         } else {
+            log.warn("Client not found for ID: {}", clientId);
             throw new NotFoundException("Client not found");
         }
     }
 
     @Override
     public List<Product> getAllProduct(Integer id) {
+        log.info("Getting all products for client ID: {}", id);
         Optional<Client> client = clientRepository.findById(id);
         if(!client.isPresent()) {
+            log.warn("Client not found for ID: {}", id);
             throw new NotFoundException("Client not found");
         }
         Cart cart = client.get().getCart();
@@ -79,6 +85,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public String removeProductfromCart(Integer productId, Integer id) {
+        log.info("Removing product from cart. Product ID: {}, Client ID: {}", productId, id);
         Client client = clientRepository.findById(id).get();
         Cart cart = client.getCart();
         if(cart == null) {
@@ -106,6 +113,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Product updateQuantity(Integer productId,Integer quantity, Integer id) {
+        log.info("Updating product quantity. Product ID: {}, Client ID: {}, Quantity: {}", productId, id, quantity);
         Client cust = clientRepository.findById(id).get();
         Cart cart = cust.getCart();
         if(cart == null) {

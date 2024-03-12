@@ -32,32 +32,48 @@ public class AdminServiceImp implements AdminService {
 
     @Override
     public Admin add(Admin admin) {
+        log.info("Adding admin: {}", admin);
         return adminRepository.save(admin);
     }
 
     @Override
     @Cacheable(value = "allAdmins")
     public List<Admin> getAll() {
+        log.info("Getting all admins");
         return adminRepository.findAll();
     }
 
     @Override
     @Cacheable(value = "admins", key = "#admin.name")
     public Admin getById(Integer adminId) {
+        log.info("Getting admin by ID: {}", adminId);
         Optional<Admin> admin = adminRepository.findById(adminId);
-        if (admin.isEmpty())
+        if (admin.isEmpty()) {
+            log.warn("Admin not found for ID: {}", adminId);
             throw new NotFoundException("Admin not found for this ID: " + adminId);
+        }
         return admin.get();
     }
 
     @Override
     public Admin update(Admin admin, String token) {
         if (!token.contains("admin")) {
+            log.error("Invalid session token for admin");
             throw new LoginException("Invalid session token for admin");
         }
         loginService.checkTokenStatus(token);
-        getById(admin.getId());
-        return adminRepository.save(admin);
+        try {
+            getById(admin.getId());
+            Admin updatedAdmin = adminRepository.save(admin);
+            log.info("Admin updated: {}", updatedAdmin.getId());
+            return updatedAdmin;
+        } catch (NotFoundException ex) {
+            log.error("Admin not found for ID: {}", admin.getId());
+            throw ex;
+        } catch (Exception ex) {
+            log.error("Error updating admin: {}", admin.getId(), ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -66,7 +82,14 @@ public class AdminServiceImp implements AdminService {
             @CacheEvict(value = "admin", key = "#id")
     })
     public void deleteById(Integer id) {
-        adminRepository.deleteById(id);
+        log.info("Deleting admin by ID: {}", id);
+        try {
+            adminRepository.deleteById(id);
+            log.info("Admin deleted: {}", id);
+        } catch (Exception ex) {
+            log.error("Error deleting admin: {}", id, ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -102,7 +125,15 @@ public class AdminServiceImp implements AdminService {
 
     @Override
     public Page<Admin> paging(Pageable pageable) {
-        return adminRepository.findAll(pageable);
+        log.info("Performing admin paging with parameters: page={}, size={}", pageable.getPageNumber(), pageable.getPageSize());
+        try {
+            Page<Admin> adminPage = adminRepository.findAll(pageable);
+            log.info("Admin paging completed. Total elements: {}", adminPage.getTotalElements());
+            return adminPage;
+        } catch (Exception ex) {
+            log.error("Error performing admin paging", ex);
+            throw ex;
+        }
     }
 
 }
