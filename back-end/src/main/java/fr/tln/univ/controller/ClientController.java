@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -70,8 +70,8 @@ public class ClientController {
 
     @PostMapping(value = "/signup")
     public String postStringUpPage(@ModelAttribute Client client) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String password = bCryptPasswordEncoder.encode(client.getPassword());
+       // BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String password =""; //bCryptPasswordEncoder.encode(client.getPassword());
         client.setPassword(password);
         client.setEmail(client.getEmail());
         clientServiceImp.addClient(client);
