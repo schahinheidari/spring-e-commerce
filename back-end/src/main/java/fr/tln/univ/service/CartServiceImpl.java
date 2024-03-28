@@ -34,6 +34,7 @@ public class CartServiceImpl implements CartService {
             if (productOptional.isPresent()) {
                 Product product = productOptional.get();
                 if (product.getQuantity() < quantity || quantity <= 0) {
+                    log.error("Out of Stock or Invalid Quantity: {}", quantity);
                     throw new NotFoundException("Out of Stock or Invalid Quantity");
                 }
                 Cart clientCart = client.getCart();
@@ -55,10 +56,11 @@ public class CartServiceImpl implements CartService {
                 cartRepository.save(clientCart);
                 return "Product added to the cart";
             } else {
+                log.error("Product not found: {}", productId);
                 throw new NotFoundException("Product not found");
             }
         } else {
-            log.warn("Client not found for ID: {}", clientId);
+            log.error("Client not found for ID: {}", clientId);
             throw new NotFoundException("Client not found");
         }
     }
@@ -68,7 +70,7 @@ public class CartServiceImpl implements CartService {
         log.info("Getting all products for client ID: {}", id);
         Optional<Client> client = clientRepository.findById(id);
         if(!client.isPresent()) {
-            log.warn("Client not found for ID: {}", id);
+            log.error("Client not found for ID: {}", id);
             throw new NotFoundException("Client not found");
         }
         Cart cart = client.get().getCart();

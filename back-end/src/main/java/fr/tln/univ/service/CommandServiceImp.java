@@ -85,8 +85,10 @@ public class CommandServiceImp implements CommandService {
     public Command getById(Integer id) {
         log.info("Getting command by ID: {}", id);
         Optional<Command> optionalCommand = commandRepository.findById(id);
-        if (optionalCommand.isEmpty())
+        if (optionalCommand.isEmpty()) {
+            log.error("Command not found.", id);
             throw new NotFoundException("Command not found.");
+        }
         return optionalCommand.get();
     }
 }

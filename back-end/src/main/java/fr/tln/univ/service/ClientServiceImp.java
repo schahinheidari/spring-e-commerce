@@ -43,7 +43,7 @@ public class ClientServiceImp implements ClientService {
         log.info("Finding client by email: {}", email);
         Optional<Client> clientOptional = clientRepository.findByEmail(email);
         if (clientOptional.isEmpty()) {
-            log.warn("Client not found for email: {}", email);
+            log.error("Client not found for email: {}", email);
             throw new NotFoundException("Client not found");
         }
         return clientOptional.get();
@@ -72,7 +72,7 @@ public class ClientServiceImp implements ClientService {
         log.info("Getting client by ID: {}", id);
         Optional<Client> clientOptional = clientRepository.findById(id);
         if (clientOptional.isEmpty()){
-            log.warn("Client not found for ID: {}", id);
+            log.error("Client not found for ID: {}", id);
             throw new NotFoundException("Client not found.");
         }
         return clientOptional.get();

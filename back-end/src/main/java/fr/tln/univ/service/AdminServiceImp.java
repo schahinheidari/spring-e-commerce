@@ -49,7 +49,7 @@ public class AdminServiceImp implements AdminService {
         log.info("Getting admin by ID: {}", adminId);
         Optional<Admin> admin = adminRepository.findById(adminId);
         if (admin.isEmpty()) {
-            log.warn("Admin not found for ID: {}", adminId);
+            log.error("Admin not found for ID: {}", adminId);
             throw new NotFoundException("Admin not found for this ID: " + adminId);
         }
         return admin.get();
