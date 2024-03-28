@@ -121,6 +121,8 @@ public class AdminServiceImp implements AdminService {
         loginService.logout(session);
         session.setMessage("Updated password and logged out. Login again with new password");
         return session;
+
+
     }
 
     @Override
