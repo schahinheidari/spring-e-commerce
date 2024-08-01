@@ -30,7 +30,7 @@ public class Command implements Serializable {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENT_ID")
+    @JoinColumn(name = "CLIENT_COMMAND_ID")
     @NotNull
     private Client client;
 

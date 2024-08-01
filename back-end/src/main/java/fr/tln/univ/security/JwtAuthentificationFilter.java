@@ -1,16 +1,12 @@
-/*
-package fr.tln.univ.config;
+
+package fr.tln.univ.security;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.SecurityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,19 +20,44 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
-public class JWTAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthentificationFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthentificationFilter.class);
     private static final String HEADER_STRING = "Authorization";
-    private SecurityService securityService;
 
     @Override
     protected void doFilterInternal(
-           @NonNull HttpServletRequest httpRequest,
-           @NonNull HttpServletResponse httpResponse,
-           @NonNull FilterChain filterChain) throws ServletException, IOException {
+            @NonNull HttpServletRequest httpRequest,
+            @NonNull HttpServletResponse httpResponse,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        //Request don't need to token
+        System.out.println("Filter...");
+
+        final String authHeader = httpRequest.getHeader("Authorization");
+        //Token invalid
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(httpRequest, httpResponse);
+            return;
+        }
+        String jwtToken = authHeader.substring(7);
+        //TODO JWTService class
+        // get username from token check username in DB
+        if (jwtToken != null){
+            //TODO token is valid
+            //TODO UserDetail class
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    null,
+                    null,
+                    null
+            );
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(httpRequest)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+
+
+       /* //Request don't need to token
         if (httpRequest.getServletPath().contains("/api/v1/auth")) {
             FilterChain.doFilter(httpRequest, httpResponse);
             return;
@@ -68,22 +89,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-        }
+        }*/
         filterChain.doFilter(httpRequest, httpResponse);
     }
-
-       */
-/* final String token = httpRequest.getHeader(HEADER_STRING);
-
-        if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            try {
-                securityService.authenticate(token);
-            } catch (Exception e) {
-                logger.debug("Failed when authenticating token '{}'. Error: '{}'", token, e.getMessage());
-            }
-        }
-        filterChain.doFilter(httpRequest, httpResponse);*//*
-
-
 }
-*/
+

@@ -1,4 +1,3 @@
-/*
 package fr.tln.univ.filters;
 
 import javax.servlet.*;
@@ -8,9 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 
 @WebFilter("/AuthenticationFilter")
-public class AuthenticationFilter implements Filter {
+public class AuthentificationFilter implements Filter {
 
     private ServletContext context;
 
@@ -38,5 +38,8 @@ public class AuthenticationFilter implements Filter {
         }
     }
 
+    @Override
+    public boolean isLoggable(LogRecord record) {
+        return false;
+    }
 }
-*/

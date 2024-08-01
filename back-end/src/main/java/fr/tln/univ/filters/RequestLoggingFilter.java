@@ -1,4 +1,3 @@
-/*
 package fr.tln.univ.filters;
 
 import javax.servlet.*;
@@ -43,5 +42,9 @@ public class RequestLoggingFilter implements Filter {
     public void destroy(){
 
     }
+
+    @Override
+    public boolean isLoggable(LogRecord record) {
+        return false;
+    }
 }
-*/

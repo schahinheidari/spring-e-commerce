@@ -28,7 +28,7 @@ public class ProductServiceImp implements ProductService {
     public Product getById(Integer id) {
         log.info("Getting product by ID: {}", id);
         Optional<Product> opt = productRepository.findById(id);
-        if (opt.isPresent())
+        if (opt.isEmpty())
             throw new NotFoundException("Product not found with given id");
         return opt.get();
     }
